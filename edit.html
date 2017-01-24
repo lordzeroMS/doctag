@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PDF Tagger Edit</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/edit.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/edit.js"></script>
+</head>
+<body>
+
+<div id="functions" class="top">
+    <span id="edit_extra"></span>
+    <button id="delete" class="btn danger">Delete file</button>
+    <button class="btn default" onclick="buttonBackClick()">Back</button>
+</div>
+
+<div id="keywords" class="keywords"></div>
+
+<div class="top-box">
+    <label for="tags">Add Keyword: </label><input id="tags">
+    <br><br>
+    <label for="datepicker">Date: </label><input type="text" id="datepicker">
+</div>
+<div class="img-box">
+
+    <div class="images">
+        <object id="pdf" data="" type="application/pdf"></object>
+    </div>
+</div>
+
+</body>
+</html>

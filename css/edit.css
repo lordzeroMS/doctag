@@ -1,0 +1,25 @@
+.pdf{
+	width: 70%;
+	height: 500px;
+}
+#pdf{
+    flex:1;
+}
+.img-box {
+    display:flex;
+    flex:1;
+}
+.images {
+    padding: 10px;
+    flex:1;
+    display: flex;
+}
+.top-box {
+    border-bottom: solid 1px grey;
+    padding: 10px;
+}
+
+.top-box label {
+    display: inline-block;
+    width: 120px;
+}

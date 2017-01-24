@@ -1,0 +1,61 @@
+
+#documents {
+    display: flex;
+    flex-wrap: wrap;
+}
+.doc {
+    border: 1px solid lightgray;
+    margin: 10px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.img-box {
+    padding: 20px;
+    background-color: #fafafa;
+    height:100%;
+}
+.img-box img {
+
+    width: 80px;
+}
+
+.info-box {
+    color: dimgray;
+    font-size: 12px;
+    border-top: solid 1px lightgray;
+    padding: 20px;
+    padding-top: 5px;
+    padding-right: 5px;
+}
+
+.date {
+    color: #cccccc ;
+    font-style: italic;
+    font-size: 10px;
+    text-align: right;
+}
+.keyword {
+    padding-top :5px;
+    overflow: hidden;
+    width: 80px;
+    text-overflow: ellipsis;
+}
+
+.date-text {
+    font-size: 14px;
+    padding-left: 20px;
+    display: inline-block;
+}
+.date-filter {
+    display: flex;
+    border-bottom: solid 1px grey;
+    padding: 10px;
+    align-items: center;
+}
+
+.btn-container {
+    flex:1;
+    text-align: right;
+}

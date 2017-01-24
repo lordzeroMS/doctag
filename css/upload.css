@@ -1,0 +1,16 @@
+.dropzone {
+    height: 500px;
+    width: auto;
+    background-color: gray;
+}
+.dz-success-mark{
+    display: none;
+}
+.dz-error-mark{
+    display: none;
+}
+.dz-message {
+    text-align: center;
+    padding: 10px;
+    color: white;
+}
