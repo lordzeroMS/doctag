@@ -20,9 +20,9 @@ function connectDB()
 {
     $db = mysqli_connect(
         "localhost",
-        "c1pdftagger",
-        "mjvtAW!RhG2",
-        "c1pdftagger"
+        "user",
+        "password",
+        "db"
     );
     selectDb($db, "start transaction");
     return $db;
