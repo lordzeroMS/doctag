@@ -1,10 +1,12 @@
 function refreshDocuments(keywords) {
     if (!keywords) keywords = "";
+    if (keywords != "") $("#keyword_field").val(keywords);
     var args = {
         method: "listPDF",
         date_from: $("#datepicker_from").val(),
         date_to: $("#datepicker_to").val(),
-        keyword: keywords
+        keyword: $("#keyword_field").val(),
+        search_field: $("#search_field").val()
     };
 
     $.getJSON("api/index.php", args)
@@ -47,6 +49,7 @@ function refreshDocuments(keywords) {
                 var words = document.createElement("div");
                 if (v1.keywords == null) v1.keywords = "&nbsp;";
                 words.innerHTML = v1.keywords;
+                words.title = v1.keywords;
                 words.classList.add('keyword');
                 infoBox.appendChild(words);
 
@@ -113,6 +116,8 @@ $(function () {
     $("#reset_date").click(function () {
         $("#datepicker_from").val("");
         $("#datepicker_to").val("");
+        $("#search_field").val("");
+        $("#keyword_field").val("");
         var btnList = document.querySelectorAll('.label');
         btnList.forEach(function (btn) {
             btn.classList.remove('selected');
@@ -124,6 +129,11 @@ $(function () {
     });
     $("#datepicker_to").datepicker({dateFormat: 'yy-mm-dd'}).bind("change", function () {
         refreshDocuments("");
+    });
+    $("#search_field").on('keyup', function (e) {
+        if (e.keyCode == 13) {
+            refreshDocuments("");
+        }
     });
     $(".keywords button").click(function (event) {
         alert(event.target.innerText);

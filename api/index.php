@@ -29,6 +29,7 @@ function connectDB()
         "password",
         "db"
     );
+    mysqli_set_charset($db, "utf8");
     selectDb($db, "start transaction");
     return $db;
 }
@@ -47,6 +48,7 @@ $method = null;
 $fileID = null;
 $keyword = null;
 $date = null;
+$search = null;
 $date_from = null;
 $date_to = null;
 
@@ -55,6 +57,9 @@ if(isset($_GET['method'])) {
 }
 if(isset($_GET['fileID'])) {
   $fileID = $_GET["fileID"];
+}
+if(isset($_GET['search_field'])) {
+  $search = $_GET["search_field"];
 }
 if(isset($_GET['keyword'])) {
   $keyword = $_GET["keyword"];
@@ -108,6 +113,16 @@ switch ($method) {
     case "listKeywords":
         $sql = "SELECT keyword FROM keywords where id in (select keywordID from fileToKeywordMap a join files b on a.fileID = b.id where b.user = '".
 					mysqli_real_escape_string($db, $user)."') order by 1;";
+        $res = selectDb($db, $sql);
+        $obj = mysqli_fetch_all($res);
+        $ret = array();
+        foreach($obj as $row)
+            array_push($ret, $row[0]);
+        mysqli_free_result($res);
+        print json_encode($ret);
+        break;
+    case "listOrginalNames":
+        $sql = "SELECT distinct `orginal_name` FROM `files`";
         $res = selectDb($db, $sql);
         $obj = mysqli_fetch_all($res);
         $ret = array();
@@ -171,18 +186,22 @@ switch ($method) {
 		join `fileToKeywordMap` b on a.id = b.keywordID
 		where keyword = '".mysqli_real_escape_string($db, $keyword)."') ");
         }
+        if (!empty($search)){
+          array_push($where_condition, " match(`ocrtext`, `pdftext`) against ( '".mysqli_real_escape_string($db, $search)."' in boolean mode) ");
+        }
         if (!empty($where_condition)){
           $where_sql = " where ".join(' and ', $where_condition);
         } else {
           $where_sql = "";
         }
-        $sql = "SELECT a.id, pdfLocation, date, tumbnail, group_concat(c.keyword) keywords 
+        $sql = "SELECT a.id, pdfLocation, date, tumbnail, group_concat(c.keyword order by c.keyword) keywords 
 	FROM files a
         left join fileToKeywordMap b on a.id = b.fileID
         left join keywords c on b.keywordID = c.id
         ".$where_sql."
         group by a.id, pdfLocation, date, tumbnail
-        order by date;";
+        order by date desc
+	limit 50;";
         $res = selectDb($db, $sql);
         $ret = array();
         while ($obj = mysqli_fetch_object($res)){
