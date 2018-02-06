@@ -20,10 +20,11 @@ function connectDB()
 {
     $db = mysqli_connect(
         "localhost",
-        "user",
-        "password",
-        "db"
+        "c1pdftagger",
+        "mjvtAW!RhG2",
+        "c1pdftagger"
     );
+    mysqli_set_charset($db, 'utf8');
     selectDb($db, "start transaction");
     return $db;
 }
@@ -59,9 +60,18 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
     echo "File is valid, and was successfully uploaded.\n";
 	$db = connectDB();
         exec("convert -density 50  \"".$uploadfile."[0]\" \"".$uploadfile.".png\"");
-        $sql = "INSERT INTO `files` (`pdfLocation`,`orginal_name`,`tumbnail`,`user`) VALUES ('".$uploadfile."', '".
+        exec("convert -density 300 \"".$uploadfile."\" -depth 8 -strip -background white -alpha off \"".$uploadfile.".tiff\"");
+        exec("tesseract -l deu \"".$uploadfile.".tiff\" \"".$uploadfile.".ocr\"");
+        exec("pdftotext \"".$uploadfile."\" \"".$uploadfile.".ext\"");
+	unlink($uploadfile.".tiff");
+        $ocr = file_get_contents($uploadfile.".ocr.txt");
+        $ext = file_get_contents($uploadfile.".ext");
+	unlink($uploadfile.".ocr.txt");
+	unlink($uploadfile.".ext");
+        $sql = "INSERT INTO `files` (`pdfLocation`,`orginal_name`,`tumbnail`,`user`, `ocrtext`, `pdftext`) VALUES ('".$uploadfile."', '".
 	  mysqli_real_escape_string($db, $_FILES['file']['name'])."','".
-          $uploadfile.".png','".mysqli_real_escape_string($db, $user)."');";
+          $uploadfile.".png','".mysqli_real_escape_string($db, $user)."',
+          '".mysqli_real_escape_string($db, $ocr)."', '".mysqli_real_escape_string($db, $ext)."');";
         selectDb($db, $sql);
         close($db, True);
 } else {
