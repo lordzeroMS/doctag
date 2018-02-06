@@ -1,6 +1,8 @@
 
 <?php
 
+include_once 'config.php';
+
 function selectDb($db, $sql)
 {
     if (!$result = mysqli_query($db, $sql)) {
@@ -19,10 +21,10 @@ function rollback($db)
 function connectDB()
 {
     $db = mysqli_connect(
-        "localhost",
-        "c1pdftagger",
-        "mjvtAW!RhG2",
-        "c1pdftagger"
+        $db_host,
+        $db_user,
+        $db_pass,
+        $db_db
     );
     mysqli_set_charset($db, 'utf8');
     selectDb($db, "start transaction");
