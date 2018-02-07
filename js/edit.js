@@ -10,12 +10,14 @@ $(function () {
                 params[key] = value;
             }
         );
+
     $.getJSON("api/index.php?method=listKeywords", null)
         .done(function (data) {
             $("#tags").autocomplete({
                 source: data
             });
         });
+
     $.getJSON("api/index.php", {method: "listEmpty"})
         .done(function (data) {
             if (data.empty_date != null) {
@@ -37,6 +39,7 @@ $(function () {
                 $("#edit_extra").prepend(b1);
             }
         });
+
     $.getJSON("api/index.php?method=detailsPDF&fileID=" + params.fileID, null)
         .done(function (data) {
 
@@ -62,10 +65,13 @@ $(function () {
             $("#datepicker").val(data["date"]);
             $("#pdf").attr("data", data["pdfLocation"]);
         });
+
     $("#datepicker").datepicker({dateFormat: 'yy-mm-dd'}).bind("change", function () {
         $.get("api", {method: "updateDate", fileID: params.fileID, date: $("#datepicker").val()})
     });
+
     $.datepicker.setDefaults($.datepicker.regional["de"]);
+
     $("#tags").keypress(function (event) {
         if (event.which == 13) {
             $.get("api", {method: "addKeyword", fileID: params.fileID, keyword: $("#tags").val()})

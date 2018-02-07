@@ -62,6 +62,7 @@ function refreshDocuments(keywords) {
 }
 $(function () {
     $.datepicker.setDefaults($.datepicker.regional["de"]);
+
     $.getJSON("api/index.php?method=listKeywords", null)
         .done(function (data) {
             data.forEach(function (v1) {
@@ -81,6 +82,7 @@ $(function () {
                 $("#keywords").append(b1);
             });
         });
+
     $.getJSON("api/index.php", {method: "listEmpty"})
         .done(function (data) {
             if (data.empty_date != null) {
@@ -104,15 +106,19 @@ $(function () {
                 $("#edit_extra").prepend(b1);
             }
         });
+
     refreshDocuments();
+
     $("#upload").click(function () {
         window.location.href = "upload.html";
     });
+
     $("#logout").click(function () {
         var out = window.location.href.replace(/:\/\//, '://log:out@');
         document.execCommand("ClearAuthenticationCache");
         window.location.href = out;
     });
+
     $("#reset_date").click(function () {
         $("#datepicker_from").val("");
         $("#datepicker_to").val("");
@@ -124,17 +130,21 @@ $(function () {
         });
         refreshDocuments("");
     });
+
     $("#datepicker_from").datepicker({dateFormat: 'yy-mm-dd'}).bind("change", function () {
         refreshDocuments("");
     });
+
     $("#datepicker_to").datepicker({dateFormat: 'yy-mm-dd'}).bind("change", function () {
         refreshDocuments("");
     });
+
     $("#search_field").on('keyup', function (e) {
         if (e.keyCode == 13) {
             refreshDocuments("");
         }
     });
+
     $(".keywords button").click(function (event) {
         alert(event.target.innerText);
         event.defaultPrevented();
