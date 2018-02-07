@@ -43,17 +43,6 @@
     text-overflow: ellipsis;
 }
 
-.date-text {
-    font-size: 14px;
-    padding-left: 20px;
-    display: inline-block;
-}
-.date-filter {
-    display: flex;
-    border-bottom: solid 1px grey;
-    padding: 10px;
-    align-items: center;
-}
 
 .btn-container {
     flex:1;

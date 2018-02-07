@@ -8,6 +8,11 @@ body {
     flex-direction: column;
     height:100%;
 }
+.logo {
+    height: 31px;
+    position: absolute;
+    left: 30px;
+}
 
 .top {
     background-color: black;
@@ -64,4 +69,18 @@ body {
 }
 .label.selected:hover {
     background-color: #63A9FF;
+}
+
+.filter-text {
+    font-size: 14px;
+    padding-left: 20px;
+    display: inline-block;
+}
+
+.filter-box {
+    display: flex;
+    border-bottom: solid 1px grey;
+    padding: 10px;
+    align-items: center;
+    line-height: 30px;
 }
