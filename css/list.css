@@ -42,7 +42,9 @@
     width: 80px;
     text-overflow: ellipsis;
 }
-
+.bottom-button-container {
+    text-align: center;
+}
 
 .btn-container {
     flex:1;
