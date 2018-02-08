@@ -6,7 +6,7 @@
  * Time: 12:01
  */
 
-include_once '../config.php';
+require_once '../config.php';
 
 function selectDb($db, $sql)
 {
@@ -25,6 +25,8 @@ function rollback($db)
 
 function connectDB()
 {
+    global $db_host, $db_user, $db_pass, $db_db;
+
     $db = mysqli_connect(
         $db_host,
         $db_user,
