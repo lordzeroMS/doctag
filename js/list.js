@@ -86,24 +86,16 @@ $(function () {
     $.getJSON("api/index.php", {method: "listEmpty"})
         .done(function (data) {
             if (data.empty_date != null) {
-                var b1 = document.createElement("button");
-                b1.innerText = "Document without date";
-                b1.classList.add('btn');
-                b1.classList.add('default');
-                b1.onclick = function (event) {
+                var dateBtn = document.querySelector('#rnd-no-date');
+                dateBtn.onclick = event => {
                     window.location.href = "edit.html?fileID=" + data.empty_date;
                 };
-                $("#edit_extra").prepend(b1);
             }
             if (data.empty_keyword != null) {
-                var b1 = document.createElement("button");
-                b1.innerText = "Document without keyword";
-                b1.classList.add('btn');
-                b1.classList.add('default');
-                b1.onclick = function (event) {
+                var dateBtn = document.querySelector('#rnd-no-key');
+                dateBtn.onclick = event => {
                     window.location.href = "edit.html?fileID=" + data.empty_keyword;
                 };
-                $("#edit_extra").prepend(b1);
             }
         });
 
