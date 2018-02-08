@@ -1,0 +1,8 @@
+.dropzone {
+    margin: 100px 150px;
+    border: dotted 2px #64B1F1;
+}
+
+.dropzone .dz-message {
+    color: black;
+}

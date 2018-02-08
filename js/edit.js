@@ -10,33 +10,30 @@ $(function () {
                 params[key] = value;
             }
         );
+
     $.getJSON("api/index.php?method=listKeywords", null)
         .done(function (data) {
             $("#tags").autocomplete({
                 source: data
             });
         });
+
     $.getJSON("api/index.php", {method: "listEmpty"})
         .done(function (data) {
             if (data.empty_date != null) {
-                var b1 = document.createElement("button");
-                b1.innerText = "Document without date";
-                b1.classList.add('btn', 'default');
-                b1.onclick = function (event) {
+                var dateBtn = document.querySelector('#rnd-no-date');
+                dateBtn.onclick = event => {
                     window.location.href = "edit.html?fileID=" + data.empty_date;
                 };
-                $("#edit_extra").prepend(b1);
             }
             if (data.empty_keyword != null) {
-                var b1 = document.createElement("button");
-                b1.innerText = "Document without keyword";
-                b1.classList.add('btn', 'default');
-                b1.onclick = function (event) {
+                var dateBtn = document.querySelector('#rnd-no-key');
+                dateBtn.onclick = event => {
                     window.location.href = "edit.html?fileID=" + data.empty_keyword;
                 };
-                $("#edit_extra").prepend(b1);
             }
         });
+
     $.getJSON("api/index.php?method=detailsPDF&fileID=" + params.fileID, null)
         .done(function (data) {
 
@@ -62,10 +59,13 @@ $(function () {
             $("#datepicker").val(data["date"]);
             $("#pdf").attr("data", data["pdfLocation"]);
         });
+
     $("#datepicker").datepicker({dateFormat: 'yy-mm-dd'}).bind("change", function () {
         $.get("api", {method: "updateDate", fileID: params.fileID, date: $("#datepicker").val()})
     });
+
     $.datepicker.setDefaults($.datepicker.regional["de"]);
+
     $("#tags").keypress(function (event) {
         if (event.which == 13) {
             $.get("api", {method: "addKeyword", fileID: params.fileID, keyword: $("#tags").val()})

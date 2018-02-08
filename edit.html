@@ -4,27 +4,31 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PDF Tagger Edit</title>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/edit.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="css/fontawesome/fontawesome-all.css">
+    <script src="js/jquery/jquery-1.12.4.js"></script>
+    <script src="js/jquery/jquery-ui.js"></script>
     <script src="js/edit.js"></script>
 </head>
 <body>
 
 <div id="functions" class="top">
+    <img class="logo" src="images/logo.png" alt="">
     <span id="edit_extra"></span>
-    <button id="delete" class="btn danger">Delete file</button>
-    <button class="btn default" onclick="buttonBackClick()">Back</button>
+
+    <button id="rnd-no-key" class="btn default"><i class="fa fa-tag"></i> without keyword</button>
+    <button id="rnd-no-date" class="btn default"><i class="fa fa-calendar"></i> without date</button>
+    <button id="delete" class="btn danger"><i class="fa fa-trash"></i> Delete file</button>
+    <button class="btn default" onclick="buttonBackClick()"><i class="fa fa-arrow-left"></i> Back</button>
 </div>
 
 <div id="keywords" class="keywords"></div>
 
-<div class="top-box">
-    <label for="tags">Add Keyword: </label><input id="tags">
-    <br><br>
-    <label for="datepicker">Date: </label><input type="text" id="datepicker">
+<div class="filter-box">
+    <div class="filter-text">Add Keyword: <input id="tags"></div>
+    <div class="filter-text">Date: <input type="text" id="datepicker"></div>
 </div>
 <div class="img-box">
 

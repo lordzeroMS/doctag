@@ -1,39 +1,44 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PDF Tagger Edit</title>
-    <link rel="stylesheet" href="css/jquery-ui.css">
-    <link rel="stylesheet" href="css/fontawesome/fontawesome-all.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/list.css">
-    <script src="js/jquery/jquery-1.12.4.js"></script>
-    <script src="js/jquery/jquery-ui.js"></script>
-    <script src="js/dropzone.js"></script>
-    <script src="js/list.js"></script>
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>PDF Tagger Edit</title>
+        <link rel="stylesheet" href="css/jquery-ui.css">
+        <link rel="stylesheet" href="css/fontawesome/fontawesome-all.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/list.css">
+        <script src="js/jquery/jquery-1.12.4.js"></script>
+        <script src="js/jquery/jquery-ui.js"></script>
+        <script src="js/dropzone.js"></script>
+        <script src="js/list.js"></script>
+    </head>
+    <body>
 
-<body>
+        <div id="edit_extra" class="top">
+            <img class="logo" src="images/logo.png" alt="">
 
-<div id="edit_extra" class="top">
-    <button id="upload" class="btn success"><i class="fa fa-upload"></i> Upload</button>
-    <button id="logout" class="btn danger"><i class="fa fa-sign-out-alt"></i> Logout</button>
-</div>
+            <button id="rnd-no-key" class="btn default"><i class="fa fa-tag"></i> without keyword</button>
+            <button id="rnd-no-date" class="btn default"><i class="fa fa-calendar"></i> without date</button>
+            <button id="upload" class="btn success"><i class="fa fa-upload"></i> Upload</button>
+            <button id="logout" class="btn danger"><i class="fa fa-sign-out-alt"></i> Logout</button>
+        </div>
 
-<div id="keywords" class="keywords"></div>
+        <div id="keywords" class="keywords"></div>
 
-<div class="date-filter">
-    <div class="date-text">Date From: <input type="text" id="datepicker_from"></div>
-    <div class="date-text">Date To: <input type="text" id="datepicker_to"></div>
-    <div class="date-text">Search: <input type="text" id="search_field"></div>
-<input type="hidden" id="keyword_field">
-    <div class="btn-container">
-        <button id="reset_date" class="btn default">Reset</button>
-    </div>
-</div>
+        <div class="filter-box">
+            <div class="filter-text">Date From: <input type="text" id="datepicker_from"></div>
+            <div class="filter-text">Date To: <input type="text" id="datepicker_to"></div>
+            <div class="filter-text">Search: <input type="text" id="search_field"></div>
+            <input type="hidden" id="keyword_field">
+            <div class="btn-container">
+                <button id="reset_date" class="btn default">Reset</button>
+            </div>
+        </div>
 
-<div id="documents"></div>
-
-</body>
+        <div id="documents"></div>
+        <div class="bottom-button-container">
+            <Button id="load-more" class="btn default">Load more...</Button>
+        </div>
+    </body>
 </html>
