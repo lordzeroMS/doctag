@@ -104,7 +104,7 @@ if ($fileID != Null){
 switch ($method) {
     case "listEmpty":
         $sql = "select (SELECT id from files where date is null and user = '".
-					mysqli_real_escape_string($db, $user)."' order by rand() limit 1) empty_date, 
+					mysqli_real_escape_string($db, $user)."' order by rand() limit 1) empty_date,
 		(SELECT id from files where id not in (select fileID from fileToKeywordMap) and user = '".
 					mysqli_real_escape_string($db, $user)."' order by rand() limit 1) empty_keyword;";
         $res = selectDb($db, $sql);
@@ -196,14 +196,13 @@ switch ($method) {
         } else {
           $where_sql = "";
         }
-        $sql = "SELECT a.id, pdfLocation, date, tumbnail, group_concat(c.keyword order by c.keyword) keywords 
+        $sql = "SELECT a.id, pdfLocation, date, tumbnail, group_concat(c.keyword order by c.keyword) keywords
 	FROM files a
         left join fileToKeywordMap b on a.id = b.fileID
         left join keywords c on b.keywordID = c.id
         ".$where_sql."
         group by a.id, pdfLocation, date, tumbnail
-        order by date desc
-	limit 50;";
+        order by date desc;";
         $res = selectDb($db, $sql);
         $ret = array();
         while ($obj = mysqli_fetch_object($res)){

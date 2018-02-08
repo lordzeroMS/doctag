@@ -1,66 +1,94 @@
-function refreshDocuments(keywords) {
-    if (!keywords) keywords = "";
-    if (keywords != "") $("#keyword_field").val(keywords);
-    var args = {
-        method: "listPDF",
-        date_from: $("#datepicker_from").val(),
-        date_to: $("#datepicker_to").val(),
-        keyword: $("#keyword_field").val(),
-        search_field: $("#search_field").val()
+$(function () {
+    let page = 1;
+    let listChuckLimit = 100;
+    let docs = [];
+
+    function createDocument(d){
+        var imgBox = document.createElement("div");
+        imgBox.classList.add('img-box');
+
+        var doc = document.createElement("div");
+        var href = document.createElement("a");
+        href.href = "edit.html?fileID=" + d.id;
+        if (d.tumbnail != null) {
+            var preview = document.createElement("img");
+            preview.src = d.tumbnail;
+            href.appendChild(preview);
+        } else {
+            href.innerText = "Document";
+        }
+        imgBox.appendChild(href);
+
+        doc.classList.add('doc');
+
+        var infoBox = document.createElement("div");
+        infoBox.classList.add('info-box');
+
+        var d = document.createElement("div");
+        if (d.date == null) d.date = "&nbsp;";
+        d.innerHTML = d.date;
+        d.classList.add('date');
+        infoBox.appendChild(d);
+
+
+        var words = document.createElement("div");
+        if (d.keywords == null) d.keywords = "&nbsp;";
+        words.innerHTML = d.keywords;
+        words.title = d.keywords;
+        words.classList.add('keyword');
+        infoBox.appendChild(words);
+
+        doc.appendChild(infoBox);
+        doc.appendChild(imgBox);
+        return doc;
+    }
+
+    function refreshDocuments(keywords = "") {
+        if (keywords != "") $("#keyword_field").val(keywords);
+        var args = {
+            method: "listPDF",
+            date_from: $("#datepicker_from").val(),
+            date_to: $("#datepicker_to").val(),
+            keyword: $("#keyword_field").val(),
+            search_field: $("#search_field").val()
+        };
+
+
+        $.getJSON("api/index.php", args)
+            .done(function (data) {
+                console.log(data);
+                docs = data;
+                var count = 0;
+                $("#documents").empty();
+
+                for( let i = 0; i < data.length && i < page * listChuckLimit; i++){
+                    let doc = createDocument(data[i]);
+                    $("#documents").append(doc);
+                }
+
+                // remove load more button if all docs are loaded
+                if( page * listChuckLimit >= docs.length ) loadMoreBtn.remove();
+            });
+
+    }
+
+    function chuckLoadDocuments( ){
+        console.log(page * listChuckLimit);
+        for( let i = page * listChuckLimit-listChuckLimit; i < docs.length && i < page * listChuckLimit; i++){
+            let doc = createDocument(docs[i]);
+            $("#documents").append(doc);
+        }
+    }
+
+    let loadMoreBtn = document.querySelector('#load-more');
+
+    loadMoreBtn.onclick = event => {
+        page++;
+        chuckLoadDocuments();
+        // remove load more button if all docs are loaded
+        if( page * listChuckLimit >= docs.length ) loadMoreBtn.remove();
     };
 
-    $.getJSON("api/index.php", args)
-        .done(function (data) {
-            var count = 0;
-            $("#documents").empty();
-
-
-            data.forEach(function (v1) {
-
-                var imgBox = document.createElement("div");
-                imgBox.classList.add('img-box');
-
-                var doc = document.createElement("div");
-                var href = document.createElement("a");
-                href.href = "edit.html?fileID=" + v1.id;
-                if (v1.tumbnail != null) {
-                    var preview = document.createElement("img");
-                    preview.src = v1.tumbnail;
-                    href.appendChild(preview);
-                } else {
-                    href.innerText = "Document";
-                }
-                imgBox.appendChild(href);
-
-
-                doc.classList.add('doc');
-
-                var infoBox = document.createElement("div");
-                infoBox.classList.add('info-box');
-
-
-                var d = document.createElement("div");
-                if (v1.date == null) v1.date = "&nbsp;";
-                d.innerHTML = v1.date;
-                d.classList.add('date');
-                infoBox.appendChild(d);
-
-
-                var words = document.createElement("div");
-                if (v1.keywords == null) v1.keywords = "&nbsp;";
-                words.innerHTML = v1.keywords;
-                words.title = v1.keywords;
-                words.classList.add('keyword');
-                infoBox.appendChild(words);
-
-                doc.appendChild(infoBox);
-                doc.appendChild(imgBox);
-
-                $("#documents").append(doc);
-            });
-        });
-}
-$(function () {
     $.datepicker.setDefaults($.datepicker.regional["de"]);
 
     $.getJSON("api/index.php?method=listKeywords", null)
