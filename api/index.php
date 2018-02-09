@@ -107,10 +107,14 @@ if ($fileID != Null){
 
 switch ($method) {
     case "listEmpty":
-        $sql = "select (SELECT id from files where date is null and user = '".
-					$user."' order by rand() limit 1) empty_date,
-		(SELECT id from files where id not in (select fileID from fileToKeywordMap) and user = '".
-					$user."' order by rand() limit 1) empty_keyword;";
+        if ($fileID != Null){
+            $fileID = 0;
+        }
+        $sql = "select
+(SELECT id from files where date is null and user = '".$user."' and id <> ".$fileID." order by rand() limit 1) empty_date,
+(SELECT count(id) from files where date is null and user = '".$user."' and id <> ".$fileID." order by rand()) empty_date_count,
+(SELECT id from files where id not in (select fileID from fileToKeywordMap) and user = '".$user."' and id <> ".$fileID." order by rand() limit 1) empty_keyword,
+(SELECT count(id) from files where id not in (select fileID from fileToKeywordMap) and user = '".$user."' and id <> ".$fileID." order by rand()) empty_keyword_count";
         $res = selectDb($db, $sql);
         $ret = mysqli_fetch_object($res);
         mysqli_free_result($res);
