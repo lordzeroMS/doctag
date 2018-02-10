@@ -60,49 +60,49 @@ $date_from = null;
 $date_to = null;
 
 if(isset($_GET['method'])) {
-  $method = mysqli_real_escape_string($db, $_GET["method"]);
+    $method = mysqli_real_escape_string($db, $_GET["method"]);
 }
 if(isset($_GET['fileID'])) {
-  $fileID = mysqli_real_escape_string($db, $_GET["fileID"]);
+    $fileID = mysqli_real_escape_string($db, $_GET["fileID"]);
 }
 if(isset($_GET['search_field'])) {
-  $search = mysqli_real_escape_string($db, $_GET["search_field"]);
+    $search = mysqli_real_escape_string($db, $_GET["search_field"]);
 }
 if(isset($_GET['keyword'])) {
-  $keyword = mysqli_real_escape_string($db, $_GET["keyword"]);
+    $keyword = mysqli_real_escape_string($db, $_GET["keyword"]);
 }
 if(isset($_GET['date'])) {
-  $date = mysqli_real_escape_string($db, $_GET["date"]);
+    $date = mysqli_real_escape_string($db, $_GET["date"]);
 }
 if(isset($_GET['date_from'])) {
-  $date_from = mysqli_real_escape_string($db, $_GET["date_from"]);
+    $date_from = mysqli_real_escape_string($db, $_GET["date_from"]);
 }
 if(isset($_GET['date_to'])) {
-  $date_to = mysqli_real_escape_string($db, $_GET["date_to"]);
+    $date_to = mysqli_real_escape_string($db, $_GET["date_to"]);
 }
 
 
 $user = "";
 if (!isset($_SERVER['PHP_AUTH_USER'])) {
-  if (!isset($_SERVER['REMOTE_USER'])) {
-    header('HTTP/1.1 403 Access denied');
-    print "unautorized User";
-    exit(1);
-  }
-  $user = mysqli_real_escape_string($db, $_SERVER['REMOTE_USER']);
+    if (!isset($_SERVER['REMOTE_USER'])) {
+        header('HTTP/1.1 403 Access denied');
+        print "unautorized User";
+        exit(1);
+    }
+    $user = mysqli_real_escape_string($db, $_SERVER['REMOTE_USER']);
 } else {
-  $user = mysqli_real_escape_string($db, $_SERVER['PHP_AUTH_USER']);
+    $user = mysqli_real_escape_string($db, $_SERVER['PHP_AUTH_USER']);
 }
 
 if ($fileID != Null){
-	$sql = "select * from files where id = ".$fileID." and user = '".$user."';";
-	$res = selectDb($db, $sql);
-	if (!$obj=mysqli_fetch_object($res)){
-    header('HTTP/1.1 403 Access denied');
-    print "unautorized User";
-    exit(0);
-  }
-	mysqli_free_result($res);
+    $sql = "select * from files where id = ".$fileID." and user = '".$user."';";
+    $res = selectDb($db, $sql);
+    if (!$obj=mysqli_fetch_object($res)){
+        header('HTTP/1.1 403 Access denied');
+        print "unautorized User";
+        exit(0);
+    }
+    mysqli_free_result($res);
 }
 
 switch ($method) {
@@ -122,7 +122,7 @@ switch ($method) {
         break;
     case "listKeywords":
         $sql = "SELECT keyword FROM keywords where id in (select keywordID from fileToKeywordMap a join files b on a.fileID = b.id where b.user = '".
-					$user."') order by 1;";
+            $user."') order by 1;";
         $res = selectDb($db, $sql);
         $obj = mysqli_fetch_all($res);
         $ret = array();
@@ -150,8 +150,8 @@ switch ($method) {
         $sql = "UPDATE `files` SET `date` = '".
             $date.
             "' WHERE `id` = ".$fileID.";";
-	selectDb($db, $sql);
-	print $sql;
+        selectDb($db, $sql);
+        print $sql;
         break;
     case "removeKeyword":
         if ($keyword == Null or $fileID == Null){
@@ -169,12 +169,12 @@ switch ($method) {
         selectDb($db, $sql);
         break;
     case "addKeyword":
-        if (empty(trim($keyword)) or $fileID == Null){
+        if (trim($keyword) == false or $fileID == Null){
             header('HTTP/1.1 500 Internal Server Error');
             print "parameter missing";
             exit(1);
         }
-        $sql = "INSERT INTO `keywords` (`keyword`) VALUES ('".mysqli_real_escape_string($db, trim($keyword))."');";
+        $sql = "INSERT INTO `keywords` (`keyword`) VALUES ('".str_replace('|', '_', trim($keyword))."');";
         mysqli_query($db, $sql);
         $sql = "INSERT INTO `fileToKeywordMap` (`fileID`,`keywordID`) VALUES(".
             $fileID.
@@ -184,25 +184,28 @@ switch ($method) {
         break;
     case "listPDF":
         $where_condition = array();
-			  array_push($where_condition, " a.user = '".$user."' ");
+        array_push($where_condition, " a.user = '".$user."' ");
         if (!empty($date_to)){
-          array_push($where_condition, " date <= '".$date_to."' ");
+            array_push($where_condition, " date <= '".$date_to."' ");
         }
         if (!empty($date_from)){
-          array_push($where_condition, " date >= '".$date_from."' ");
+            array_push($where_condition, " date >= '".$date_from."' ");
         }
         if (!empty($keyword)){
-          array_push($where_condition, " a.id in (SELECT fileID FROM `keywords` a
-		join `fileToKeywordMap` b on a.id = b.keywordID
-		where keyword = '".$keyword."') ");
+            $k_list = explode('|', $keyword);
+            foreach ($k_list as $k){
+                array_push($where_condition, " a.id in (SELECT fileID FROM `keywords` a	join `fileToKeywordMap` b
+                on a.id = b.keywordID where keyword = '".$k."') ");
+            }
+
         }
         if (!empty($search)){
-          array_push($where_condition, " match(`ocrtext`, `pdftext`) against ( '".$search."' in boolean mode) ");
+            array_push($where_condition, " match(`ocrtext`, `pdftext`) against ( '".$search."' in boolean mode) ");
         }
         if (!empty($where_condition)){
-          $where_sql = " where ".join(' and ', $where_condition);
+            $where_sql = " where ".join(' and ', $where_condition);
         } else {
-          $where_sql = "";
+            $where_sql = "";
         }
         $sql = "SELECT a.id, pdfLocation, date, tumbnail, group_concat(c.keyword order by c.keyword) keywords
 	FROM files a
@@ -248,17 +251,17 @@ switch ($method) {
         $sql = "SELECT * FROM files where id = ".$fileID.";";
         $res = selectDb($db, $sql);
         $ret = mysqli_fetch_object($res);
-	if (!empty($ret->pdfLocation)){
-		unlink("../".$ret->pdfLocation);
-	}
-	if (!empty($ret->tumbnail)){
-		unlink("../".$ret->tumbnail);
-	}
-	$sql = "delete from `files` where `id` = ".
+        if (!empty($ret->pdfLocation)){
+            unlink("../".$ret->pdfLocation);
+        }
+        if (!empty($ret->tumbnail)){
+            unlink("../".$ret->tumbnail);
+        }
+        $sql = "delete from `files` where `id` = ".
             $fileID.
             ";";
         selectDb($db, $sql);
-	$sql = "delete from `fileToKeywordMap` where `fileID` = ".
+        $sql = "delete from `fileToKeywordMap` where `fileID` = ".
             $fileID.
             ";";
         selectDb($db, $sql);
@@ -271,4 +274,4 @@ switch ($method) {
         exit(1);
 }
 
-	close($db, True);
+close($db, True);
