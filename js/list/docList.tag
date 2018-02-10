@@ -7,6 +7,7 @@
             </div>
             <div class="img-box"><a href="edit.html?fileID={doc.id}"><img src="{doc.tumbnail}"></a></div>
         </div>
+
         <div class="bottom-button-container" if="{docs.length > chunkLimit * chunkCount}">
             <Button onclick="{onLoadMoreClick}" class="btn default">Load more...</Button>
         </div>
