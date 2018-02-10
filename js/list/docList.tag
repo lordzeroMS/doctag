@@ -15,7 +15,7 @@
         const that = this;
         this.docs = [];
         this.docsFiltered = [];
-        this.chunkLimit = 3;
+        this.chunkLimit = 50;
         this.chunkCount = 1;
 
         function onData(data){
