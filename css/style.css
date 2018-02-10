@@ -57,6 +57,11 @@ body {
     background-color: #63A9FF;
 }
 
+.btn.disabled {
+    filter: saturate(40%) contrast(60%);
+    cursor: not-allowed;
+}
+
 .label {
     background-color: white;
     border: none;
@@ -74,7 +79,7 @@ body {
 
 .filter-text {
     font-size: 14px;
-    padding-left: 20px;
+    padding-right: 20px;
     display: inline-block;
 }
 

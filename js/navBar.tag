@@ -2,8 +2,8 @@
     <div class="top">
         <img class="logo" src="images/logo.png" alt="">
 
-        <button onclick="{onNoKeywordClick}" ref="noKeyword" class="btn default"><i class="fa fa-tag"></i> without keyword <label class="badge">{noTagCount}</label></button>
-        <button onclick="{onNoDateClick}" ref="noDate" class="btn default"><i class="fa fa-calendar"></i> without date <label class="badge">{noDateCount}</label></button>
+        <button onclick="{onNoKeywordClick}" ref="noKeyword" class="btn default {disabled: noTagCount == 0}"><i class="fa fa-tag"></i> without keyword <label class="badge">{noTagCount}</label></button>
+        <button onclick="{onNoDateClick}" ref="noDate" class="btn default {disabled: noDateCount == 0}"><i class="fa fa-calendar"></i> without date <label class="badge">{noDateCount}</label></button>
         <button onclick="{onUploadClick}" ref="upload" class="btn success"><i class="fa fa-upload"></i> Upload</button>
         <button onclick="{onDeleteClick}" ref="delete" class="btn danger"><i class="fa fa-trash-alt"></i> Delete</button>
         <button onclick="{onBackClick}" ref="back" class="btn default"><i class="fa fa-arrow-left"></i> Back</button>
@@ -13,8 +13,10 @@
         const that = this;
 
         this.showBtn = ['noDate', 'noKeyword', 'upload', 'delete', 'back', 'logout'];
-        this.noDateDocId = '';
-        this.noTagDocId = '';
+        this.noDateDocId = 0;
+        this.noTagDocId = 0;
+        this.noTagCount = 0;
+        this.noDateCount = 0;
 
         this.show = btnType => {
             console.log(btnType);
@@ -40,10 +42,13 @@
         };
 
         this.onNoDateClick = e => {
+
+        	if( that.noDateCount !== 0 )
             window.location.href = "edit.html?fileID=" + that.noDateDocId;
         };
 
         this.onNoKeywordClick = e => {
+	        if( that.noTagCount !== 0)
             window.location.href = "edit.html?fileID=" + that.noTagDocId;
         };
 
