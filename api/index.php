@@ -48,6 +48,9 @@ function close($db, $commit=False)
     mysqli_close($db);
 }
 
+
+$db = connectDB();
+
 $method = null;
 $fileID = null;
 $keyword = null;
@@ -57,25 +60,25 @@ $date_from = null;
 $date_to = null;
 
 if(isset($_GET['method'])) {
-  $method = $_GET["method"];
+  $method = mysqli_real_escape_string($db, $_GET["method"]);
 }
 if(isset($_GET['fileID'])) {
-  $fileID = $_GET["fileID"];
+  $fileID = mysqli_real_escape_string($db, $_GET["fileID"]);
 }
 if(isset($_GET['search_field'])) {
-  $search = $_GET["search_field"];
+  $search = mysqli_real_escape_string($db, $_GET["search_field"]);
 }
 if(isset($_GET['keyword'])) {
-  $keyword = $_GET["keyword"];
+  $keyword = mysqli_real_escape_string($db, $_GET["keyword"]);
 }
 if(isset($_GET['date'])) {
-  $date = $_GET["date"];
+  $date = mysqli_real_escape_string($db, $_GET["date"]);
 }
 if(isset($_GET['date_from'])) {
-  $date_from = $_GET["date_from"];
+  $date_from = mysqli_real_escape_string($db, $_GET["date_from"]);
 }
 if(isset($_GET['date_to'])) {
-  $date_to = $_GET["date_to"];
+  $date_to = mysqli_real_escape_string($db, $_GET["date_to"]);
 }
 
 
@@ -86,14 +89,13 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
     print "unautorized User";
     exit(1);
   }
-  $user = $_SERVER['REMOTE_USER'];
+  $user = mysqli_real_escape_string($db, $_SERVER['REMOTE_USER']);
 } else {
-  $user = $_SERVER['PHP_AUTH_USER'];
+  $user = mysqli_real_escape_string($db, $_SERVER['PHP_AUTH_USER']);
 }
 
-	$db = connectDB();
 if ($fileID != Null){
-	$sql = "select * from files where id = ".mysqli_real_escape_string($db, $fileID)." and user = '".mysqli_real_escape_string($db, $user)."';";
+	$sql = "select * from files where id = ".$fileID." and user = '".$user."';";
 	$res = selectDb($db, $sql);
 	if (!$obj=mysqli_fetch_object($res)){
     header('HTTP/1.1 403 Access denied');
@@ -105,10 +107,14 @@ if ($fileID != Null){
 
 switch ($method) {
     case "listEmpty":
-        $sql = "select (SELECT id from files where date is null and user = '".
-					mysqli_real_escape_string($db, $user)."' order by rand() limit 1) empty_date,
-		(SELECT id from files where id not in (select fileID from fileToKeywordMap) and user = '".
-					mysqli_real_escape_string($db, $user)."' order by rand() limit 1) empty_keyword;";
+        if ($fileID != Null){
+            $fileID = 0;
+        }
+        $sql = "select
+(SELECT id from files where date is null and user = '".$user."' and id <> ".$fileID." order by rand() limit 1) empty_date,
+(SELECT count(id) from files where date is null and user = '".$user."' and id <> ".$fileID." order by rand()) empty_date_count,
+(SELECT id from files where id not in (select fileID from fileToKeywordMap) and user = '".$user."' and id <> ".$fileID." order by rand() limit 1) empty_keyword,
+(SELECT count(id) from files where id not in (select fileID from fileToKeywordMap) and user = '".$user."' and id <> ".$fileID." order by rand()) empty_keyword_count";
         $res = selectDb($db, $sql);
         $ret = mysqli_fetch_object($res);
         mysqli_free_result($res);
@@ -116,7 +122,7 @@ switch ($method) {
         break;
     case "listKeywords":
         $sql = "SELECT keyword FROM keywords where id in (select keywordID from fileToKeywordMap a join files b on a.fileID = b.id where b.user = '".
-					mysqli_real_escape_string($db, $user)."') order by 1;";
+					$user."') order by 1;";
         $res = selectDb($db, $sql);
         $obj = mysqli_fetch_all($res);
         $ret = array();
@@ -142,8 +148,8 @@ switch ($method) {
             exit(1);
         }
         $sql = "UPDATE `files` SET `date` = '".
-            mysqli_real_escape_string($db, $date).
-            "' WHERE `id` = ".mysqli_real_escape_string($db, $fileID).";";
+            $date.
+            "' WHERE `id` = ".$fileID.";";
 	selectDb($db, $sql);
 	print $sql;
         break;
@@ -154,9 +160,9 @@ switch ($method) {
             exit(1);
         }
         $sql = "delete from `fileToKeywordMap` where `fileID` = ".
-            mysqli_real_escape_string($db, $fileID).
+            $fileID.
             " and `keywordID` in (select `id` from `keywords` where `keyword` = '".
-            mysqli_real_escape_string($db, $keyword).
+            $keyword.
             "');";
         selectDb($db, $sql);
         $sql = "delete from `keywords` where `id` not in (select distinct `keywordID` from `fileToKeywordMap`);";
@@ -171,27 +177,27 @@ switch ($method) {
         $sql = "INSERT INTO `keywords` (`keyword`) VALUES ('".mysqli_real_escape_string($db, trim($keyword))."');";
         mysqli_query($db, $sql);
         $sql = "INSERT INTO `fileToKeywordMap` (`fileID`,`keywordID`) VALUES(".
-            mysqli_real_escape_string($db, $fileID).
+            $fileID.
             ",(select min(id) from keywords where keyword = '".
-            mysqli_real_escape_string($db, $keyword)."'));";
+            $keyword."'));";
         selectDb($db, $sql);
         break;
     case "listPDF":
         $where_condition = array();
-			  array_push($where_condition, " a.user = '".mysqli_real_escape_string($db, $user)."' ");
+			  array_push($where_condition, " a.user = '".$user."' ");
         if (!empty($date_to)){
-          array_push($where_condition, " date <= '".mysqli_real_escape_string($db, $date_to)."' ");
+          array_push($where_condition, " date <= '".$date_to."' ");
         }
         if (!empty($date_from)){
-          array_push($where_condition, " date >= '".mysqli_real_escape_string($db, $date_from)."' ");
+          array_push($where_condition, " date >= '".$date_from."' ");
         }
         if (!empty($keyword)){
           array_push($where_condition, " a.id in (SELECT fileID FROM `keywords` a
 		join `fileToKeywordMap` b on a.id = b.keywordID
-		where keyword = '".mysqli_real_escape_string($db, $keyword)."') ");
+		where keyword = '".$keyword."') ");
         }
         if (!empty($search)){
-          array_push($where_condition, " match(`ocrtext`, `pdftext`) against ( '".mysqli_real_escape_string($db, $search)."' in boolean mode) ");
+          array_push($where_condition, " match(`ocrtext`, `pdftext`) against ( '".$search."' in boolean mode) ");
         }
         if (!empty($where_condition)){
           $where_sql = " where ".join(' and ', $where_condition);
@@ -218,14 +224,14 @@ switch ($method) {
             print "parameter missing";
             exit(1);
         }
-        $sql = "SELECT * FROM files where id = ".mysqli_real_escape_string($db, $fileID).";";
+        $sql = "SELECT * FROM files where id = ".$fileID.";";
         $res = selectDb($db, $sql);
         $ret = mysqli_fetch_object($res);
 
         $sql = "
             select keyword from keywords a
             join fileToKeywordMap b on a.id = b.keywordID
-            where b.fileID = ".mysqli_real_escape_string($db, $fileID)." order by 1;";
+            where b.fileID = ".$fileID." order by 1;";
         $res = selectDb($db, $sql);
         $obj = mysqli_fetch_all($res);
         $ret->keywords = array();
@@ -239,7 +245,7 @@ switch ($method) {
             print "parameter missing";
             exit(1);
         }
-        $sql = "SELECT * FROM files where id = ".mysqli_real_escape_string($db, $fileID).";";
+        $sql = "SELECT * FROM files where id = ".$fileID.";";
         $res = selectDb($db, $sql);
         $ret = mysqli_fetch_object($res);
 	if (!empty($ret->pdfLocation)){
@@ -249,11 +255,11 @@ switch ($method) {
 		unlink("../".$ret->tumbnail);
 	}
 	$sql = "delete from `files` where `id` = ".
-            mysqli_real_escape_string($db, $fileID).
+            $fileID.
             ";";
         selectDb($db, $sql);
 	$sql = "delete from `fileToKeywordMap` where `fileID` = ".
-            mysqli_real_escape_string($db, $fileID).
+            $fileID.
             ";";
         selectDb($db, $sql);
         $sql = "delete from `keywords` where `id` not in (select distinct `keywordID` from `fileToKeywordMap`);";
