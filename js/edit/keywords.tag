@@ -22,6 +22,7 @@
                 .done((data,success)=>{
                     if( success == 'success'){
                         docDetailStore.trigger('loadDocDetails');
+                        tagStore.trigger('loadTags');
                     }
                 });
             }

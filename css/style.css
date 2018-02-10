@@ -33,6 +33,7 @@ body {
     font-size: 12px;
     padding: 8px;
     cursor: pointer;
+    position: relative;
 }
 
 .btn.success {
@@ -83,4 +84,16 @@ body {
     padding: 10px;
     align-items: center;
     line-height: 30px;
+}
+
+.badge {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    color: white;
+    background-color: red;
+    padding: 3px 5px;
+    border-radius: 5px;
+    font-size: 10px;
+    text-align: center;
 }

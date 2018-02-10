@@ -45,6 +45,7 @@ function close($db, $commit=False)
 
 
 $user = "";
+/*
 if (!isset($_SERVER['PHP_AUTH_USER'])) {
   if (!isset($_SERVER['REMOTE_USER'])) {
     header('HTTP/1.1 403 Access denied');
@@ -55,7 +56,7 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
 } else {
   $user = $_SERVER['PHP_AUTH_USER'];
 }
-
+*/
 $uniqid = uniqid();
 $uploaddir = 'documents/';
 $uploadfile = $uploaddir . $uniqid .".pdf";

@@ -107,7 +107,7 @@ if ($fileID != Null){
 
 switch ($method) {
     case "listEmpty":
-        if ($fileID != Null){
+        if ($fileID == Null){
             $fileID = 0;
         }
         $sql = "select
