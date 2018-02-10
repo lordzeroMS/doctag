@@ -11,7 +11,9 @@
         }
 
         function onFilterEmit(filter){
-            let keywords = that.refs.keyword;
+            let keywords = that.refs.keyword || [];
+            if( !Array.isArray(keywords) ) keywords = [keywords];
+
             keywords.forEach( keyword => {
                 if( keyword.innerText == filter.keyword ) {
                     keyword.classList.add('selected');

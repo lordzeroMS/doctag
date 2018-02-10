@@ -20,9 +20,9 @@
                         if(resp == 'success'){
                             e.target.value = '';
                             docDetailStore.trigger('loadDocDetails');
+                            tagStore.trigger('loadTags');
                         }
                     });
-
             }
         };
 
@@ -33,7 +33,11 @@
 
             $("#datepicker").datepicker({dateFormat: 'yy-mm-dd'}).bind("change", function () {
                 // HACK: params comes from global scope
-                $.get("api", {method: "updateDate", fileID: params.fileID, date: $("#datepicker").val()});
+                $.get("api", {method: "updateDate", fileID: params.fileID, date: $("#datepicker").val()})
+                .done((data,success)=>{
+                    if(success == 'success') tagStore.trigger('loadTags');
+                });
+
             });
         });
 
