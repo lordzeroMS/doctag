@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -8,34 +8,65 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/edit.css">
     <link rel="stylesheet" href="css/fontawesome/fontawesome-all.css">
-    <script src="js/jquery/jquery-1.12.4.js"></script>
-    <script src="js/jquery/jquery-ui.js"></script>
-    <script src="js/edit.js"></script>
+    <script src="js/libs/jquery/jquery-1.12.4.js"></script>
+    <script src="js/libs/jquery/jquery-ui.js"></script>
+    <script type="riot/tag" src="js/navBar.tag"></script>
+    <script type="riot/tag" src="js/edit/keywords.tag"></script>
+    <script type="riot/tag" src="js/edit/tagDoc.tag"></script>
+    <script src="js/libs/riot/riot+compiler.min.js"></script>
 </head>
 <body>
 
-<div id="functions" class="top">
-    <img class="logo" src="images/logo.png" alt="">
-    <span id="edit_extra"></span>
+<nav-bar buttons="{['noKeyword','noDate','delete','back']}"></nav-bar>
 
-    <button id="rnd-no-key" class="btn default"><i class="fa fa-tag"></i> without keyword</button>
-    <button id="rnd-no-date" class="btn default"><i class="fa fa-calendar"></i> without date</button>
-    <button id="delete" class="btn danger"><i class="fa fa-trash"></i> Delete file</button>
-    <button class="btn default" onclick="buttonBackClick()"><i class="fa fa-arrow-left"></i> Back</button>
-</div>
+<keywords></keywords>
 
-<div id="keywords" class="keywords"></div>
 
-<div class="filter-box">
-    <div class="filter-text">Add Keyword: <input id="tags"></div>
-    <div class="filter-text">Date: <input type="text" id="datepicker"></div>
-</div>
+<tag-doc data-date=""></tag-doc>
+
 <div class="img-box">
-
     <div class="images">
-        <object id="pdf" data="" type="application/pdf"></object>
+        <object id="pdf" type="application/pdf"></object>
     </div>
 </div>
+<script>
+    riot.mount('*');
 
+    let params = {};
+    window.location.search
+        .replace(/[?&]+([^=&]+)=([^&]*)/gi, function (str, key, value) {
+                params[key] = value;
+            }
+        );
+
+    function onData(data){
+        console.log(data);
+        let pdfObject = $("#pdf");
+        // only fill if it is empty
+        if( !pdfObject.attr("data")){
+            pdfObject.attr("data", data["pdfLocation"]);
+        };
+    }
+
+    function DocDetailStore(){
+        riot.observable(this);
+        this.doc = {};
+        const that = this;
+
+
+        this.on('loadDocDetails', filter => {
+            $.getJSON("api/index.php?method=detailsPDF&fileID=" + params.fileID, null)
+                .done(function (data) {
+                    that.doc = data;
+                    that.trigger('docDetails', data);
+                });
+        });
+    }
+
+    let docDetailStore = new DocDetailStore();
+    docDetailStore.trigger('loadDocDetails');
+    docDetailStore.on('docDetails', onData);
+
+</script>
 </body>
 </html>
