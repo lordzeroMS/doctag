@@ -19,6 +19,7 @@
         this.chunkCount = 1;
 
         function onData(data){
+	        that.chunkCount = 1;
             that.docs = data;
             that.docsFiltered = that.docs.slice(0, that.chunkCount * that.chunkLimit);
             that.update();
