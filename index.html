@@ -47,6 +47,21 @@
                 this.trigger('emit', that.filter);
             });
 
+            // toggle presents in array
+	        this.on('toggle', obj => {
+		        let key = Object.keys(obj);
+
+		        if(!that.filter[key])
+			        that.filter[key] = [];
+		        let pos = that.filter[key].indexOf(obj[key]);
+		        if(  pos === -1){
+			        that.filter.keyword.push(obj[key]);
+		        }
+		        else that.filter.keyword.splice(pos,1);
+
+		        this.trigger('emit', that.filter);
+	        });
+
             this.on('init', () => {
                 this.filter = {};
                 this.trigger('emit', that.filter);
@@ -71,12 +86,11 @@
             });
 
             this.on('loadDocs', filter => {
-
                 let args = {
                     method: "listPDF",
                     date_from: filter.dateFrom,
                     date_to: filter.dateTo,
-                    keyword: filter.keyword,
+                    keyword: Array.isArray(filter.keyword) ? filter.keyword.join('|'): filter.keyword,
                     search_field: filter.searchValue,
                 };
 

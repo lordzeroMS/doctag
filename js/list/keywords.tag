@@ -1,9 +1,10 @@
 <keywords>
     <div id="keywords" class="keywords">
-        <button ref="keyword" class="label" onclick="{onKeywordClick}" each="{keyword in keywords}">{keyword}</button>
+        <button class="label {'selected' : isSelected(keyword)}" onclick="{onKeywordClick}" each="{keyword in keywords}">{keyword}</button>
     </div>
     <script>
         const that = this;
+        this.keywords = [];
 
         function onData(data){
             that.keywords = data;
@@ -11,28 +12,17 @@
         }
 
         function onFilterEmit(filter){
-            let keywords = that.refs.keyword || [];
-            if( !Array.isArray(keywords) ) keywords = [keywords];
-
-            keywords.forEach( keyword => {
-                if( keyword.innerText == filter.keyword ) {
-                    keyword.classList.add('selected');
-                }
-                else {
-                    keyword.classList.remove('selected');
-                }
-            });
+        	that.selected = filter.keyword;
+        	that.update();
         }
+
+        this.isSelected = keyword => {
+            return  that.selected ? that.selected.indexOf(keyword) != -1 ? 'selected': '' : false;
+        };
 
         this.onKeywordClick = e => {
             let keyword = e.item.keyword;
-            // docStore.trigger('loadDocs', {'keyword': keyword});
-            if( e.target.classList.contains('selected') ) {
-                filterStore.trigger('remove', {'keyword': keyword});
-            }
-            else {
-                filterStore.trigger('add', {'keyword': keyword});
-            }
+	        filterStore.trigger('toggle', {'keyword': keyword});
         };
 
         this.on('mount', function(){
