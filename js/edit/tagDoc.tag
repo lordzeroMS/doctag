@@ -7,10 +7,15 @@
         const that = this;
         this.date = '';
 
-
         function onData(data){
             $("#datepicker").val(data.date);
             that.update();
+        }
+
+        function onKeywords(keywords){
+            $( "#tags" ).autocomplete({
+                source: keywords
+            });
         }
 
         this.onTagKey = e => {
@@ -20,6 +25,8 @@
                         if(resp == 'success'){
                             e.target.value = '';
                             docDetailStore.trigger('loadDocDetails');
+                            docStore.trigger('loadKeywords');
+                            // HACK: comes from global navBar.tag
                             tagStore.trigger('loadTags');
                         }
                     });
@@ -28,8 +35,12 @@
 
         this.on('mount', function(){
             docDetailStore.on('docDetails', onData);
+            let docStore = new DocStore();
+            docStore.trigger('loadKeywords');
+            docStore.on('keywords', onKeywords);
 
             $.datepicker.setDefaults($.datepicker.regional["de"]);
+
 
             $("#datepicker").datepicker({dateFormat: 'yy-mm-dd'}).bind("change", function () {
                 // HACK: params comes from global scope
