@@ -43,12 +43,12 @@
 
         this.onNoDateClick = e => {
 
-        	if( that.noDateCount !== 0 )
+        	if( that.noDateCount != 0 )
             window.location.href = "edit.html?fileID=" + that.noDateDocId;
         };
 
         this.onNoKeywordClick = e => {
-	        if( that.noTagCount !== 0)
+	        if( that.noTagCount != 0)
             window.location.href = "edit.html?fileID=" + that.noTagDocId;
         };
 
