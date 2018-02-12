@@ -65,7 +65,7 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
 	$db = connectDB();
         exec("convert -density 50  \"".$uploadfile."[0]\" \"".$uploadfile.".png\"");
         exec("convert -density 300 \"".$uploadfile."\" -depth 8 -strip -background white -alpha off \"".$uploadfile.".tiff\"");
-        exec("tesseract -l deu \"".$uploadfile.".tiff\" \"".$uploadfile.".ocr\"");
+        exec("tesseract -l ".$ocr_lang." \"".$uploadfile.".tiff\" \"".$uploadfile.".ocr\"");
         exec("pdftotext \"".$uploadfile."\" \"".$uploadfile.".ext\"");
 	unlink($uploadfile.".tiff");
         $ocr = file_get_contents($uploadfile.".ocr.txt");
