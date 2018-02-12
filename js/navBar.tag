@@ -43,12 +43,12 @@
 
         this.onNoDateClick = e => {
 
-        	if( that.noDateCount !== 0 )
+        	if( that.noDateCount != 0 )
             window.location.href = "edit.html?fileID=" + that.noDateDocId;
         };
 
         this.onNoKeywordClick = e => {
-	        if( that.noTagCount !== 0)
+	        if( that.noTagCount != 0)
             window.location.href = "edit.html?fileID=" + that.noTagDocId;
         };
 
@@ -65,7 +65,7 @@
 
             this.on('loadTags', filter => {
 
-                $.getJSON("api/index.php", {method: "listEmpty"})
+                $.getJSON("api/index.php", {method: "listEmpty", fileID:params.fileID})
                     .done(function (data) {
                         that.trigger('tags', data);
                     }
