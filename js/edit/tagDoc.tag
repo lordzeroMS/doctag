@@ -5,7 +5,6 @@
     </div>
     <script>
         const that = this;
-        this.date = '';
 
         function onData(data){
             $("#datepicker").val(data.date);
@@ -25,7 +24,6 @@
                         if(resp == 'success'){
                             e.target.value = '';
                             docDetailStore.trigger('loadDocDetails');
-                            docStore.trigger('loadKeywords');
                             // HACK: comes from global navBar.tag
                             tagStore.trigger('loadTags');
                         }
