@@ -30,6 +30,14 @@
     <script>
         riot.mount('*');
 
+        let params = {};
+        window.location.search
+            .replace(/[?&]+([^=&]+)=([^&]*)/gi, function (str, key, value) {
+                    params[key] = value;
+                }
+            );
+
+
         function FilterStore(){
             riot.observable(this);
             this.filter = {};
