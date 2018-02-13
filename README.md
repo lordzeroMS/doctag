@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `files` (
   `user` varchar(64) DEFAULT NULL,
   `ocrtext` longtext,
   `pdftext` longtext
-) ENGINE=MyISAM AUTO_INCREMENT=1439 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `fileToKeywordMap` (
 CREATE TABLE IF NOT EXISTS `keywords` (
 `id` int(11) NOT NULL,
   `keyword` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1511 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 --
 -- Indizes der exportierten Tabellen
@@ -100,7 +100,7 @@ ALTER TABLE `files`
 -- Indizes für die Tabelle `fileToKeywordMap`
 --
 ALTER TABLE `fileToKeywordMap`
- ADD KEY `fileID` (`fileID`), ADD KEY `keywordID` (`keywordID`);
+ ADD UNIQUE KEY `fileID_2` (`fileID`,`keywordID`), ADD KEY `fileID` (`fileID`), ADD KEY `keywordID` (`keywordID`);
 
 --
 -- Indizes für die Tabelle `keywords`
