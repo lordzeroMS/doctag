@@ -2,12 +2,12 @@
     <div class="top">
         <img class="logo" src="images/logo.png" alt="">
 
-        <button onclick="{onNoKeywordClick}" ref="noKeyword" class="btn default {disabled: noTagCount == 0}"><i class="fa fa-tag"></i> without keyword <label class="badge">{noTagCount}</label></button>
-        <button onclick="{onNoDateClick}" ref="noDate" class="btn default {disabled: noDateCount == 0}"><i class="fa fa-calendar"></i> without date <label class="badge">{noDateCount}</label></button>
-        <button onclick="{onUploadClick}" ref="upload" class="btn success"><i class="fa fa-upload"></i> Upload</button>
-        <button onclick="{onDeleteClick}" ref="delete" class="btn danger"><i class="fa fa-trash-alt"></i> Delete</button>
-        <button onclick="{onBackClick}" ref="back" class="btn default"><i class="fa fa-arrow-left"></i> Back</button>
-        <button onclick="{onLogoutClick}" ref="logout" class="btn danger"><i class="fa fa-sign-out-alt"></i> Logout</button>
+        <button onclick="{onNoKeywordClick}" ref="noKeyword" class="btn default {disabled: noTagCount == 0}"><i class="fa fa-fw fa-tag"></i> without keyword <label class="badge">{noTagCount}</label></button>
+        <button onclick="{onNoDateClick}" ref="noDate" class="btn default {disabled: noDateCount == 0}"><i class="fa fa-fw fa-calendar"></i> without date <label class="badge">{noDateCount}</label></button>
+        <button onclick="{onUploadClick}" ref="upload" class="btn success"><i class="fa fa-fw fa-upload"></i> Upload</button>
+        <button onclick="{onDeleteClick}" ref="delete" class="btn danger"><i class="fa fa-fw fa-trash-alt"></i> Delete</button>
+        <button onclick="{onBackClick}" ref="back" class="btn default"><i class="fa fa-fw fa-arrow-left"></i> Back</button>
+        <button onclick="{onLogoutClick}" ref="logout" class="btn danger"><i class="fa fa-fw fa-sign-out-alt"></i> Logout</button>
     </div>
     <script>
         const that = this;

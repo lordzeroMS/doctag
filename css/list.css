@@ -5,11 +5,10 @@
 }
 
 .doc {
-    border: 1px solid lightgray;
     margin: 10px;
-    border-radius: 6px;
     display: flex;
     flex-direction: column-reverse;
+    position: relative;
 }
 
 .img-box {
@@ -19,29 +18,35 @@
 }
 .img-box img {
 
-    width: 80px;
+    width: 145px;
 }
 
 .info-box {
-    color: dimgray;
     font-size: 12px;
     border-top: solid 1px lightgray;
-    padding: 20px;
-    padding-top: 5px;
-    padding-right: 5px;
+    position: absolute;
+    background-color: black;
+    opacity: 0.5;
+    width: 100%;
+    bottom: 0;
+    min-height: 45px;
 }
 
 .date {
-    color: #cccccc ;
+    color: #ccc;
     font-style: italic;
     font-size: 10px;
     text-align: right;
+    padding: 5px 5px 0 0;
+    height: 15px;
 }
 .keyword {
-    padding-top :5px;
+    padding-top: 5px;
     overflow: hidden;
     width: 80px;
     text-overflow: ellipsis;
+    padding: 0 0 10px 10px;
+    color: #ccc;
 }
 .bottom-button-container {
     text-align: center;
