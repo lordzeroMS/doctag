@@ -19,7 +19,7 @@
 
         this.onTagKey = function(event) {
             if (event.which == 13) {
-                $.get("api", {method: "addKeyword", fileID: params.fileID, keyword: e.target.value})
+                $.get("api", {method: "addKeyword", fileID: params.fileID, keyword: event.target.value})
                     .done(function (data,resp) {
                         if(resp == 'success'){
                             event.target.value = '';

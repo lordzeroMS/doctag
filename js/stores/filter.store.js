@@ -3,20 +3,20 @@ function FilterStore(){
     this.filter = {};
     const that = this;
 
-    this.on('add', obj => {
+    this.on('add', function(obj){
         let key = Object.keys(obj)[0];
         that.filter[key] = obj[key];
         this.trigger('emit', that.filter);
     });
 
-    this.on('remove', obj => {
+    this.on('remove', function(obj){
         let key = Object.keys(obj)[0];
         delete that.filter[key];
         this.trigger('emit', that.filter);
     });
 
     // toggle presents in array
-    this.on('toggle', obj => {
+    this.on('toggle', function(obj){
         let key = Object.keys(obj);
 
         if(!that.filter[key])
@@ -30,12 +30,12 @@ function FilterStore(){
         this.trigger('emit', that.filter);
     });
 
-    this.on('init', () => {
+    this.on('init', function(){
         this.filter = {};
         this.trigger('emit', that.filter);
     });
 
-    this.on('emit', data =>{
+    this.on('emit', function(data){
         docStore.trigger('loadDocs', data );
     });
 
