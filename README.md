@@ -64,8 +64,6 @@ CREATE TABLE IF NOT EXISTS `files` (
   `pdftext` longtext
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
 --
 -- table structure for table `fileToKeywordMap`
 --
@@ -74,8 +72,6 @@ CREATE TABLE IF NOT EXISTS `fileToKeywordMap` (
   `fileID` int(11) NOT NULL,
   `keywordID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
 
 --
 -- table structure for table `keywords`

@@ -17,7 +17,7 @@
             });
         }
 
-        this.onTagKey = e => {
+        this.onTagKey = function() {
             if (event.which == 13) {
                 $.get("api", {method: "addKeyword", fileID: params.fileID, keyword: e.target.value})
                     .done(function (data,resp) {
@@ -43,7 +43,7 @@
             $("#datepicker").datepicker({dateFormat: 'yy-mm-dd'}).bind("change", function () {
                 // HACK: params comes from global scope
                 $.get("api", {method: "updateDate", fileID: params.fileID, date: $("#datepicker").val()})
-                .done((data,success)=>{
+                .done(function (data,success){
                     if(success == 'success') tagStore.trigger('loadTags');
                 });
 

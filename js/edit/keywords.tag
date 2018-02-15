@@ -9,7 +9,7 @@
             that.update();
         };
 
-        this.onKeywordClick = e => {
+        this.onKeywordClick = function() {
             let keyword =e.item.keyword;
             var box = window.confirm("Should '" + keyword + "' be removed?");
             if (box == true) {
@@ -19,7 +19,7 @@
                     fileID: params.fileID,
                     keyword: keyword
                 })
-                .done((data,success)=>{
+                .done(function(data,success){
                     if( success == 'success'){
                         docDetailStore.trigger('loadDocDetails');
                         tagStore.trigger('loadTags');
