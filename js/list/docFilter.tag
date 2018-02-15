@@ -9,7 +9,7 @@
     </div>
     <script>
 
-        this.onResetClick = () => {
+        this.onResetClick = function() {
             filterStore.trigger('init');
         };
 
@@ -19,7 +19,7 @@
             $("#search_field").val(data.searchValue);
         }
 
-        this.on('mount', () => {
+        this.on('mount', function() {
             filterStore.on('emit', onData );
 
             $.datepicker.setDefaults($.datepicker.regional["de"]);

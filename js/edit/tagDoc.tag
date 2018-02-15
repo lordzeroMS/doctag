@@ -17,12 +17,12 @@
             });
         }
 
-        this.onTagKey = function() {
+        this.onTagKey = function(event) {
             if (event.which == 13) {
                 $.get("api", {method: "addKeyword", fileID: params.fileID, keyword: e.target.value})
                     .done(function (data,resp) {
                         if(resp == 'success'){
-                            e.target.value = '';
+                            event.target.value = '';
                             docDetailStore.trigger('loadDocDetails');
                             // HACK: comes from global navBar.tag
                             tagStore.trigger('loadTags');

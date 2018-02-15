@@ -16,11 +16,11 @@
         	that.update();
         }
 
-        this.isSelected = keyword => {
+        this.isSelected = function(keyword) {
             return  that.selected ? that.selected.indexOf(keyword) != -1 ? 'selected': '' : false;
         };
 
-        this.onKeywordClick = e => {
+        this.onKeywordClick = function(e) {
             let keyword = e.item.keyword;
 	        filterStore.trigger('toggle', {'keyword': keyword});
         };

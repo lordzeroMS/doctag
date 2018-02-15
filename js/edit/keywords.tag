@@ -9,7 +9,7 @@
             that.update();
         };
 
-        this.onKeywordClick = function() {
+        this.onKeywordClick = function(e) {
             let keyword =e.item.keyword;
             var box = window.confirm("Should '" + keyword + "' be removed?");
             if (box == true) {
