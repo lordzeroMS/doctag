@@ -3,14 +3,14 @@ function DocStore(){
     this.docs = [];
     const that = this;
 
-    this.on('loadKeywords', () => {
+    this.on('loadKeywords', function() {
         $.getJSON("api/index.php?method=listKeywords", null)
             .done(function (data) {
                 that.trigger('keywords', data);
             });
     });
 
-    this.on('loadDocs', filter => {
+    this.on('loadDocs', function(filter) {
         let args = {
             method: "listPDF",
             date_from: filter.dateFrom,

@@ -50,7 +50,7 @@ sudo apt-get apache2 apache2-utils libapache2-mod-php5 mysql-server php5-mysqlnd
 ```
 
 --
--- Tabellenstruktur für Tabelle `files`
+-- table structure for table `files`
 --
 
 CREATE TABLE IF NOT EXISTS `files` (
@@ -64,10 +64,8 @@ CREATE TABLE IF NOT EXISTS `files` (
   `pdftext` longtext
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
 --
--- Tabellenstruktur für Tabelle `fileToKeywordMap`
+-- table structure for table `fileToKeywordMap`
 --
 
 CREATE TABLE IF NOT EXISTS `fileToKeywordMap` (
@@ -75,10 +73,8 @@ CREATE TABLE IF NOT EXISTS `fileToKeywordMap` (
   `keywordID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
 --
--- Tabellenstruktur für Tabelle `keywords`
+-- table structure for table `keywords`
 --
 
 CREATE TABLE IF NOT EXISTS `keywords` (
@@ -86,24 +82,21 @@ CREATE TABLE IF NOT EXISTS `keywords` (
   `keyword` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
---
--- Indizes der exportierten Tabellen
---
 
 --
--- Indizes für die Tabelle `files`
+-- indices for table `files`
 --
 ALTER TABLE `files`
  ADD PRIMARY KEY (`id`), ADD KEY `pdfLocation` (`pdfLocation`(255)), ADD KEY `date` (`date`), ADD FULLTEXT KEY `ocrtext` (`ocrtext`), ADD FULLTEXT KEY `pdftext` (`pdftext`);
 
 --
--- Indizes für die Tabelle `fileToKeywordMap`
+-- indices for table `fileToKeywordMap`
 --
 ALTER TABLE `fileToKeywordMap`
  ADD UNIQUE KEY `fileID_2` (`fileID`,`keywordID`), ADD KEY `fileID` (`fileID`), ADD KEY `keywordID` (`keywordID`);
 
 --
--- Indizes für die Tabelle `keywords`
+-- indices for table `keywords`
 --
 ALTER TABLE `keywords`
  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `keyword_UNIQUE` (`keyword`);

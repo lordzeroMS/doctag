@@ -26,7 +26,7 @@
             that.update();
         }
 
-        this.onLoadMoreClick = e => {
+        this.onLoadMoreClick = function(){
             that.docsFiltered = that.docs.slice(0, ++that.chunkCount * that.chunkLimit);
             that.update();
         };
