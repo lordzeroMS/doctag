@@ -4,6 +4,7 @@
     </div>
     <script>
         const that = this;
+
         function onData(data){
             that.keywords = data.keywords;
             that.update();
