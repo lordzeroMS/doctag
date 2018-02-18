@@ -81,6 +81,15 @@
                 }
             });
         });
+        $(document).ready( function (){
+            $(document).keydown(function (e){
+                if (e.altKey &&  e.which == '78'){
+                    if( that.noDateCount != 0 )
+                        window.location.href = "edit.html?fileID=" + that.noDateDocId;
+                }
+            });
+	    $( "#tags" ).focus();
+        });
 
     </script>
 </nav-bar>
