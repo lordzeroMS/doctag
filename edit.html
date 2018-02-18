@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/fontawesome/fontawesome-all.css">
     <script src="js/libs/jquery/jquery-1.12.4.js"></script>
     <script src="js/libs/jquery/jquery-ui.js"></script>
+    <script src="js/stores/docDetail.store.js"></script>
     <script type="riot/tag" src="js/navBar.tag"></script>
     <script type="riot/tag" src="js/edit/keywords.tag"></script>
     <script type="riot/tag" src="js/edit/tagDoc.tag"></script>
@@ -51,21 +52,6 @@
         };
     }
 
-    function DocDetailStore(){
-        riot.observable(this);
-        this.doc = {};
-        const that = this;
-
-
-        this.on('loadDocDetails', filter => {
-            $.getJSON("api/index.php?method=detailsPDF&fileID=" + params.fileID, null)
-                .done(function (data, status, xhr) {
-                    that.doc = data;
-                    that.trigger('docDetails', data);
-
-                });
-        });
-    }
 
     let docDetailStore = new DocDetailStore();
     docDetailStore.trigger('loadDocDetails');
