@@ -1,6 +1,6 @@
 <tag-doc>
     <div class="filter-box">
-        <div class="filter-text">Add Keyword: <input id="tags" onkeyup="{onTagKey}"></div>
+        <div class="filter-text">Add Keyword: <input ref="keyword" id="tags" onkeyup="{onTagKey}"></div>
         <div class="filter-text">Date: <input type="text" id="datepicker"></div>
     </div>
     <script>
@@ -42,6 +42,8 @@
             let docStore = new DocStore();
             docStore.trigger('loadKeywords');
             docStore.on('keywords', onKeywords);
+
+            that.refs.keyword.focus();
 
             $.datepicker.setDefaults($.datepicker.regional["de"]);
 
