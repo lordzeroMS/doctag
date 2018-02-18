@@ -5,17 +5,23 @@
     </div>
     <script>
         const that = this;
+        let allKeywords = [];
+        let docKeywords = [];
 
         function onData(data){
+            allKeywords = data.keywords;
             $("#datepicker").val(data.date);
+            onKeywords(docKeywords);
             that.update();
         }
 
         function onKeywords(keywords){
+            docKeywords = keywords;
             $( "#tags" ).autocomplete({
-                source: keywords
+                source: _(docKeywords).difference(allKeywords)
             });
         }
+
 
         this.onTagKey = e => {
             if (e.which == 13) {

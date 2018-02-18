@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/fontawesome/fontawesome-all.css">
     <script src="js/libs/jquery/jquery-1.12.4.js"></script>
     <script src="js/libs/jquery/jquery-ui.js"></script>
+    <script src="js/libs/underscore/underscore.js"></script>
     <script src="js/stores/docDetail.store.js"></script>
     <script type="riot/tag" src="js/navBar.tag"></script>
     <script type="riot/tag" src="js/edit/keywords.tag"></script>
@@ -26,7 +27,7 @@
 <keywords></keywords>
 
 
-<tag-doc data-date=""></tag-doc>
+<tag-doc></tag-doc>
 
 <div class="img-box">
     <div class="images">
@@ -44,7 +45,6 @@
         );
 
     function onData(data){
-        console.log(data);
         let pdfObject = $("#pdf");
         // only fill if it is empty
         if( !pdfObject.attr("data")){
