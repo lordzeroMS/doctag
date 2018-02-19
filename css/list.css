@@ -6,9 +6,15 @@
 
 .doc {
     margin: 10px;
-    display: flex;
-    flex-direction: column-reverse;
     position: relative;
+    display: flex;
+}
+
+.doc a {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    text-decoration: none;
 }
 
 .doc:hover {
@@ -16,12 +22,16 @@
 }
 
 .img-box {
+    background-color: #eee;
     padding: 20px;
-    background-color: #fafafa;
-    height:100%;
+    flex:1;
 }
+
 .img-box img {
     width: 145px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: white;
 }
 
 .img-box .fa-search-plus {
@@ -47,8 +57,6 @@
     right: 0;
     display: none;
     margin: 300px calc(50% - 435px/2);
-    width: 425px;
-    height: 550px;
     box-shadow: 10px 10px 15px 5px rgba(30,30,30,0.5);
 }
 
@@ -57,10 +65,7 @@
 }
 .info-box {
     font-size: 12px;
-    border-top: solid 1px lightgray;
-    position: absolute;
-    background-color: black;
-    opacity: 0.5;
+    background-color: #696969;
     width: 100%;
     bottom: 0;
     min-height: 45px;
