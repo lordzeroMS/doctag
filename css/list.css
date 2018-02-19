@@ -58,6 +58,7 @@
     display: none;
     margin: 300px calc(50% - 435px/2);
     box-shadow: 10px 10px 15px 5px rgba(30,30,30,0.5);
+    pointer-events: none;
 }
 
 .show-zoomed {

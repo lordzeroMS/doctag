@@ -6,7 +6,7 @@
                 <div class="img-box">
                     <img src="{doc.tumbnail}" alt="">
                     <!--<div class="img" style="background-image: url('{doc.tumbnail}')"></div>-->
-                    <i class="fa fa-search-plus" onmouseover="{showZoomed}" onmouseleave="{hideZoomed}"></i>
+                    <i class="fa fa-search-plus" onmouseenter="{showZoomed}" onmouseout="{hideZoomed}"></i>
                 </div>
                 <div class="info-box">
                     <div class="date">{doc.date}</div>
