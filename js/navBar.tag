@@ -80,6 +80,14 @@
                     this.refs[btn].remove();
                 }
             });
+
+            document.addEventListener('keydown', e => {
+                if (e.altKey &&  e.which == '39'){
+                    if( that.noDateCount != 0 )
+                        window.location.href = "edit.html?fileID=" + that.noDateDocId;
+                }
+            });
+
         });
 
     </script>
