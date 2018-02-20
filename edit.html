@@ -30,10 +30,9 @@
 <tag-doc></tag-doc>
 
 <div class="img-box">
-    <div class="images">
-        <object id="pdf" type="application/pdf"></object>
-    </div>
+    <div class="images"></div>
 </div>
+
 <script>
     riot.mount('*');
 
@@ -45,11 +44,11 @@
         );
 
     function onData(data){
-        let pdfObject = $("#pdf");
-        // only fill if it is empty
-        if( !pdfObject.attr("data")){
-            pdfObject.attr("data", data["pdfLocation"]);
-        };
+        let pdfObj = document.createElement("object");
+        pdfObj.setAttribute('id', 'pdf');
+        pdfObj.setAttribute('type', 'application/pdf');
+        pdfObj.setAttribute('data', data.pdfLocation);
+        document.querySelector('.img-box .images').appendChild(pdfObj);
     }
 
 
