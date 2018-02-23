@@ -15,17 +15,29 @@
             var box = window.confirm("Should '" + keyword + "' be removed?");
             if (box == true) {
                 // HACK: params is from global scope
-                $.get("api", {
-                    method: "removeKeyword",
-                    fileID: params.fileID,
-                    keyword: keyword
-                })
-                .done((data,success)=>{
-                    if( success == 'success'){
-                        docDetailStore.trigger('loadDocDetails');
-                        tagStore.trigger('loadTags');
+                let request = {
+                    url: 'api/',
+                    data: {
+                        method: "removeKeyword",
+                        fileID: params.fileID,
+                        keyword: keyword
                     }
-                });
+                };
+
+                getData(request).then(function(response) {
+                            if (response.status !== 200) {
+                                console.error('Looks like there was a problem. Status Code: ' + response.status);
+                                return;
+                            }
+                            else {
+                                docDetailStore.trigger('loadDocDetails');
+                                tagStore.trigger('loadTags');
+                            }
+                        }
+                    )
+                    .catch(function(err) {
+                        console.error('Fetch Error :-S', err);
+                    });
             }
         };
 

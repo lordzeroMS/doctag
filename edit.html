@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/edit.css">
     <link rel="stylesheet" href="css/fontawesome/fontawesome-all.css">
-    <script src="js/libs/jquery/jquery-1.12.4.js"></script>
+    <script src="js/tools.js"></script>
     <script src="js/libs/underscore/underscore.js"></script>
     <script src="js/stores/docDetail.store.js"></script>
     <script type="riot/tag" src="js/navBar.tag"></script>
@@ -43,10 +43,10 @@
         );
 
     function onData(data){
-        let pdfObject = $("#pdf");
+        let pdfObject = document.querySelector("#pdf");
         // only fill if it is empty
-        if( !pdfObject.attr("data")){
-            pdfObject.attr("data", data["pdfLocation"]);
+        if( !pdfObject.getAttribute('data')){
+            pdfObject.setAttribute("data", data["pdfLocation"]);
         };
     }
 

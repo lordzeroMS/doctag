@@ -30,24 +30,64 @@
 
 
         this.onTagKey = e => {
+
             if (e.which == 13) {
-                $.get("api", {method: "addKeyword", fileID: params.fileID, keyword: e.target.value})
-                    .done(function (data, resp) {
-                        if (resp == 'success') {
-                            e.target.value = '';
-                            docDetailStore.trigger('loadDocDetails');
-                            // HACK: comes from global navBar.tag
-                            tagStore.trigger('loadTags');
+
+                let request = {
+                    url: 'api/',
+                    data: {
+                        method: 'addKeyword',
+                        fileID: params.fileID,
+                        keyword: e.target.value
+                    }
+                };
+
+                getData(request).then( function(response) {
+                            if (response.status !== 200) {
+                                console.error('Looks like there was a problem. Status Code: ' + response.status);
+                                return;
+                            }
+                            else {
+                                e.target.value = '';
+                                docDetailStore.trigger('loadDocDetails');
+                                // HACK: comes from global navBar.tag
+                                tagStore.trigger('loadTags');
+                            }
                         }
+                    )
+                    .catch(function(err) {
+                        console.error('Fetch Error :-S', err);
                     });
+
+
             }
         };
 
         this.onDateChange = e => {
-            $.get("api", {method: "updateDate", fileID: params.fileID, date: e.target.value})
-                .done((data, success) => {
-                    if (success == 'success') tagStore.trigger('loadTags');
+
+            let request = {
+                url: 'api/',
+                data: {
+                    method: 'updateDate',
+                    fileID: params.fileID,
+                    date: e.target.value
+                }
+            };
+
+            getData(request).then( function(response) {
+                        if (response.status !== 200) {
+                            console.error('Looks like there was a problem. Status Code: ' + response.status);
+                            return;
+                        }
+                        else {
+                            tagStore.trigger('loadTags');
+                        }
+                    }
+                )
+                .catch(function(err) {
+                    console.error('Fetch Error :-S', err);
                 });
+
         };
 
         this.on('mount', function () {

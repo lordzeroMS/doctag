@@ -34,9 +34,25 @@
             // HACK: params comes from global scope and will only be filled if edit.html was opened
             var box = window.confirm("You want to delete this document?");
             if (box == true) {
-                $.get("api", {method: "removePDF", fileID: params.fileID})
-                    .done(function (data) {
-                        window.location.href = "index.html";
+
+                let request = {
+                    url: 'api/',
+                    data : {
+                        method: "removePDF",
+                        fileID: params.fileID
+                    }
+                };
+                getData(request).then(function(response) {
+                        if (response.status !== 200) {
+                            console.error('Looks like there was a problem. Status Code: ' + response.status);
+                            return;
+                        }
+                        else {
+                            window.location.href = "index.html";
+                        }
+                    })
+                    .catch(function(err) {
+                        console.error('Fetch Error :-S', err);
                     });
             }
         };
