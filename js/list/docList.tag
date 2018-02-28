@@ -5,7 +5,6 @@
 
                 <div class="img-box">
                     <img src="{doc.tumbnail}" alt="">
-                    <!--<div class="img" style="background-image: url('{doc.tumbnail}')"></div>-->
                     <i class="fa fa-search-plus" onmouseenter="{showZoomed}" onmouseout="{hideZoomed}"></i>
                 </div>
                 <div class="info-box">

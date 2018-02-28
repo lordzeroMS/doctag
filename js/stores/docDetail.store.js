@@ -5,10 +5,30 @@ function DocDetailStore(){
 
 
     this.on('loadDocDetails', filter => {
-        $.getJSON("api/index.php?method=detailsPDF&fileID=" + params.fileID, null)
-            .done(function (data) {
-                that.doc = data;
-                that.trigger('docDetails', data);
-            });
+
+        let request = {
+            url: 'api/',
+            data: {
+                method: 'detailsPDF',
+                fileID: params.fileID
+            }
+        };
+
+        getData(request).then(function(response) {
+                if (response.status !== 200) {
+                    console.error('Looks like there was a problem. Status Code: ' + response.status);
+                    return;
+                }
+                else {
+                    response.json().then(data =>{
+                        that.doc = data;
+                        that.trigger('docDetails', data);
+                    });
+                }
+            }
+        )
+        .catch(function(err) {
+            console.error('Fetch Error :-S', err);
+        });
     });
 }
