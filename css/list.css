@@ -51,7 +51,7 @@
     display: inherit;
 }
 .zoomed {
-    position: absolute;
+    position: fixed;
     top: 0;
     background: #fafafa;
     right: 0;
