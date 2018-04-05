@@ -46,7 +46,9 @@
         pdfObj.setAttribute('id', 'pdf');
         pdfObj.setAttribute('type', 'application/pdf');
         pdfObj.setAttribute('data', data.pdfLocation);
-        document.querySelector('.img-box .images').appendChild(pdfObj);
+        if(document.querySelector('.img-box .images').childElementCount === 0){
+            document.querySelector('.img-box .images').appendChild(pdfObj);
+        }
     }
 
 
