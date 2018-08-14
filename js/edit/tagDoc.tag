@@ -14,14 +14,14 @@
         let allKeywords = [];
         let docKeywords = [];
         that.listedKeywords = [];
-        let document_link = "";
-        let document_name = "";
+        let documentLink = "";
+        let documentName = "";
 
         function onData(data) {
             allKeywords = data.keywords;
-            document_name = data.date + '_' + allKeywords.join('_');
-            document_link = data.pdfLocation;
-            console.log('document link '+document_link);
+            documentName = data.date + '_' + allKeywords.join('_');
+            documentLink = data.pdfLocation;
+            console.log('document link '+documentLink);
             let datepicker = that.refs.datepicker;
             datepicker.value = data.date;
             onKeywords(docKeywords);
@@ -36,8 +36,8 @@
 
         this.onDownloadClick = e => {
             var a = document.createElement("a");
-            a.href = document_link;
-            a.download = document_name;
+            a.href = documentLink;
+            a.download = documentName;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
