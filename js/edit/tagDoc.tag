@@ -21,7 +21,7 @@
             allKeywords = data.keywords;
             document_name = data.date + '_' + allKeywords.join('_');
             document_link = data.pdfLocation;
-            console.log('document link '+document_link;
+            console.log('document link '+document_link);
             let datepicker = that.refs.datepicker;
             datepicker.value = data.date;
             onKeywords(docKeywords);
