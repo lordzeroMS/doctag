@@ -7,15 +7,21 @@
             </datalist>
         </div>
         <div class="filter-text">Date: <input ref="datepicker" type="date" onChange="{onDateChange}"></div>
+        <button onclick="{onDownloadClick}" ref="download" class="btn success"><i class="fa fa-fw fa-upload"></i> Download</button>
     </div>
     <script>
         const that = this;
         let allKeywords = [];
         let docKeywords = [];
         that.listedKeywords = [];
+        let document_link = "";
+        let document_name = "";
 
         function onData(data) {
             allKeywords = data.keywords;
+            document_name = data.date + '_' + allKeywords.join('_');
+            document_link = data.pdfLocation;
+            console.log('document link '+document_link;
             let datepicker = that.refs.datepicker;
             datepicker.value = data.date;
             onKeywords(docKeywords);
@@ -27,6 +33,15 @@
             that.listedKeywords = _(docKeywords).difference(allKeywords);
             that.update();
         }
+
+        this.onDownloadClick = e => {
+            var a = document.createElement("a");
+            a.href = document_link;
+            a.download = document_name;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
 
 
         this.onTagKey = e => {
