@@ -120,6 +120,32 @@ switch ($method) {
         mysqli_free_result($res);
         print json_encode($ret);
         break;
+    case "listDupplicates":
+        if ($fileID == Null){
+            $fileID = 0;
+        }
+        $sql = "
+SELECT a.id as a_id, b.id as b_id, a.date, a.user, a.tumbnail as a_pdf, b.tumbnail as b_pdf 
+FROM files a 
+inner join files b 
+on a.date = b.date 
+and a.user = b.user
+left outer join fileNoDup c
+on a.id = c.filesIDa
+and b.id = c.filesIDb
+where a.id < b.id 
+and c.filesIDa is null
+and a.user = '".$user."'
+order by 1,2
+limit 20";
+        $res = selectDb($db, $sql);
+        $ret = array();
+        while ($obj = mysqli_fetch_object($res)){
+            array_push($ret, $obj);
+        }
+        print json_encode($ret);
+        mysqli_free_result($res);
+        break;
     case "listKeywords":
         $sql = "SELECT keyword FROM keywords where id in (select keywordID from fileToKeywordMap a join files b on a.fileID = b.id where b.user = '".
             $user."') order by 1;";
