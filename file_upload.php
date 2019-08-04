@@ -77,10 +77,8 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
     mysqli_real_escape_string($db, $_FILES['file']['name'])."','".
     $uploadfile.".png','".mysqli_real_escape_string($db, $user)."',
     '".mysqli_real_escape_string($db, $ocr)."', '".mysqli_real_escape_string($db, $ext)."');";
-    $res = selectDb($db, $sql);
-    $last_id = $db->insert_id;
-    print "result:";
-    print json_encode($res);
+    selectDb($db, $sql);
+    $last_id = mysql_insert_id($db);
     close($db, True);
     print "last_id:";
     print $last_id;
