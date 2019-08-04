@@ -62,6 +62,7 @@ $uploadfile = $uploaddir . $uniqid .".pdf";
 
 if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
 
+    header('HTTP/1.1 200 OK');
     $db = connectDB();
     exec("convert -density 50  \"".$uploadfile."[0]\" \"".$uploadfile.".png\"");
     exec("convert -density 300 \"".$uploadfile."\" -depth 8 -strip -background white -alpha off \"".$uploadfile.".tiff\"");
@@ -78,8 +79,10 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
     '".mysqli_real_escape_string($db, $ocr)."', '".mysqli_real_escape_string($db, $ext)."');";
     $res = selectDb($db, $sql);
     $last_id = $db->insert_id;
-    print json_encode($ret);
+    print "result:"
+    print json_encode($res);
     close($db, True);
+    print "last_id:"
     print $last_id;
 
 } else {
