@@ -76,10 +76,11 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
     mysqli_real_escape_string($db, $_FILES['file']['name'])."','".
     $uploadfile.".png','".mysqli_real_escape_string($db, $user)."',
     '".mysqli_real_escape_string($db, $ocr)."', '".mysqli_real_escape_string($db, $ext)."');";
-    selectDb($db, $sql);
+    $res = selectDb($db, $sql);
     $last_id = $db->insert_id;
+    print json_encode($ret);
     close($db, True);
-    echo $last_id;
+    print $last_id;
 
 } else {
     header('HTTP/1.1 500 Internal Server Error');
