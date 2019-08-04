@@ -80,6 +80,7 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
     $res = selectDb($db, $sql);
     $last_id = mysql_insert_id($res);
     close($db, True);
+    print "last_id:";
     print $last_id;
 
 } else {
