@@ -52,12 +52,17 @@ function DocStore(){
             });
     });
 
-    this.on('loadKeywords', () => {
+    this.on('loadKeywords', filter => {
 
         let request = {
             url: 'api/',
             data : {
-                method: "listVisibleKeywords"
+                method: "listVisibleKeywords",
+                date_from: filter.dateFrom || '',
+                date_to: filter.dateTo || '',
+                keyword: Array.isArray(filter.keyword) ? filter.keyword.join('|') : filter.keyword,
+                search_field: filter.searchValue,
+                search_keyword: filter.searchKeyword,
             }
         };
 

@@ -108,6 +108,30 @@ if ($fileID != Null){
     mysqli_free_result($res);
 }
 
+$where_condition = array();
+array_push($where_condition, " a.user = '".$user."' ");
+if (!empty($date_to)){
+    array_push($where_condition, " date <= '".$date_to."' ");
+}
+if (!empty($date_from)){
+    array_push($where_condition, " date >= '".$date_from."' ");
+}
+if (!empty($search_keyword)){
+        array_push($where_condition, " a.id in (SELECT fileID FROM `keywords` a	join `fileToKeywordMap` b
+        on a.id = b.keywordID where keyword = '".$search_keyword."') ");
+}
+if (!empty($keyword)){
+    $k_list = explode('|', $keyword);
+    foreach ($k_list as $k){
+        array_push($where_condition, " a.id in (SELECT fileID FROM `keywords` a	join `fileToKeywordMap` b
+        on a.id = b.keywordID where keyword = '".$k."') ");
+    }
+
+}
+if (!empty($search)){
+    array_push($where_condition, " match(`ocrtext`, `pdftext`) against ( '".$search."' in boolean mode) ");
+}
+
 switch ($method) {
     case "listEmpty":
         if ($fileID == Null){
@@ -135,8 +159,13 @@ switch ($method) {
         print json_encode($ret);
         break;
     case "listVisibleKeywords":
+        if (!empty($where_condition)){
+            $where_sql = " and id in (SELECT a.id FROM files a where ".join(' and ', $where_condition).")";
+        } else {
+            $where_sql = "";
+        }
         $sql = "SELECT keyword FROM keywords where type = 'visible' and id in (select keywordID from fileToKeywordMap a join files b on a.fileID = b.id where b.user = '".
-            $user."') order by 1;";
+            $user."') ".$where_sql." order by 1;";
         $res = selectDb($db, $sql);
         $obj = mysqli_fetch_all($res);
         $ret = array();
@@ -222,29 +251,6 @@ switch ($method) {
         selectDb($db, $sql);
         break;
     case "listPDF":
-        $where_condition = array();
-        array_push($where_condition, " a.user = '".$user."' ");
-        if (!empty($date_to)){
-            array_push($where_condition, " date <= '".$date_to."' ");
-        }
-        if (!empty($date_from)){
-            array_push($where_condition, " date >= '".$date_from."' ");
-        }
-        if (!empty($search_keyword)){
-                array_push($where_condition, " a.id in (SELECT fileID FROM `keywords` a	join `fileToKeywordMap` b
-                on a.id = b.keywordID where keyword = '".$search_keyword."') ");
-        }
-        if (!empty($keyword)){
-            $k_list = explode('|', $keyword);
-            foreach ($k_list as $k){
-                array_push($where_condition, " a.id in (SELECT fileID FROM `keywords` a	join `fileToKeywordMap` b
-                on a.id = b.keywordID where keyword = '".$k."') ");
-            }
-
-        }
-        if (!empty($search)){
-            array_push($where_condition, " match(`ocrtext`, `pdftext`) against ( '".$search."' in boolean mode) ");
-        }
         if (!empty($where_condition)){
             $where_sql = " where ".join(' and ', $where_condition);
         } else {
