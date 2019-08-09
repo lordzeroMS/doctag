@@ -188,7 +188,7 @@ switch ($method) {
             print "parameter missing";
             exit(1);
         }
-        $sql = "INSERT INTO `keywords` (`keyword`) VALUES ('".str_replace('|', '_', trim($keyword))."', 'visible');";
+        $sql = "INSERT INTO `keywords` (`keyword`, `type`) VALUES ('".str_replace('|', '_', trim($keyword))."', 'visible');";
         mysqli_query($db, $sql);
         $sql = "INSERT INTO `fileToKeywordMap` (`fileID`,`keywordID`) VALUES(".
             $fileID.
@@ -202,7 +202,7 @@ switch ($method) {
             print "parameter missing";
             exit(1);
         }
-        $sql = "INSERT INTO `keywords` (`keyword`) VALUES ('".str_replace('|', '_', trim($keyword))."', 'hidden');";
+        $sql = "INSERT INTO `keywords` (`keyword`, `type`) VALUES ('".str_replace('|', '_', trim($keyword))."', 'hidden');";
         mysqli_query($db, $sql);
         $sql = "INSERT INTO `fileToKeywordMap` (`fileID`,`keywordID`) VALUES(".
             $fileID.
