@@ -1,15 +1,15 @@
 <tag-doc>
     <div class="filter-box">
         <div class="filter-text">Add Keyword:
-            <input list="listedkeywords" ref="keyword" id="tags" onkeyup="{onTagKey}">
-            <datalist id="listedkeywords">
-                <option each={keyword in listedKeywords} value="{keyword}">{keyword}</option>
+            <input list="listedvisiblekeywords" ref="keyword" id="tags" onkeyup="{onTagKey}">
+            <datalist id="listedvisiblekeywords">
+                <option each={keyword in listedVisibleKeywords} value="{keyword}">{keyword}</option>
             </datalist>
         </div>
         <div class="filter-text">Add Hidden Keyword:
-            <input list="listedkeywords" ref="keyword" id="tags" onkeyup="{onTagHidKey}">
-            <datalist id="listedkeywords">
-                <option each={keyword in listedKeywords} value="{keyword}">{keyword}</option>
+            <input list="listedhiddenkeywords" ref="keyword" id="tags" onkeyup="{onTagHidKey}">
+            <datalist id="listedhiddenkeywords">
+                <option each={keyword in listedHiddenKeywords} value="{keyword}">{keyword}</option>
             </datalist>
         </div>
         <div class="filter-text">Date: <input ref="datepicker" type="date" onChange="{onDateChange}"></div>
@@ -19,7 +19,8 @@
         const that = this;
         let allKeywords = [];
         let docKeywords = [];
-        that.listedKeywords = [];
+        that.listedVisibleKeywords = [];
+        that.listedHiddenKeywords = [];
         let documentLink = "";
         let documentName = "";
 
@@ -34,9 +35,15 @@
             that.update();
         }
 
-        function onKeywords(keywords) {
+        function onVisibleKeywords(keywords) {
             docKeywords = keywords;
-            that.listedKeywords = _(docKeywords).difference(allKeywords);
+            that.listedVisibleKeywords = _(docKeywords).difference(allKeywords);
+            that.update();
+        }
+
+        function onHiddenKeywords(keywords) {
+            docKeywords = keywords;
+            that.listedHiddenKeywords = _(docKeywords).difference(allKeywords);
             that.update();
         }
 
@@ -149,8 +156,10 @@
         this.on('mount', function () {
             docDetailStore.on('docDetails', onData);
             let docStore = new DocStore();
-            docStore.trigger('loadAllKeywords');
-            docStore.on('allKeywords', onKeywords);
+            docStore.trigger('loadKeywords');
+            docStore.trigger('loadHiddenKeywords');
+            docStore.on('keywords', onVisibleKeywords);
+            docStore.on('hiddenKeywords', onHiddenKeywords);
 
             that.refs.keyword.focus();
         });

@@ -145,6 +145,17 @@ switch ($method) {
         mysqli_free_result($res);
         print json_encode($ret);
         break;
+    case "listHiddenKeywords":
+        $sql = "SELECT keyword FROM keywords where type = 'hidden' and id in (select keywordID from fileToKeywordMap a join files b on a.fileID = b.id where b.user = '".
+            $user."') order by 1;";
+        $res = selectDb($db, $sql);
+        $obj = mysqli_fetch_all($res);
+        $ret = array();
+        foreach($obj as $row)
+            array_push($ret, $row[0]);
+        mysqli_free_result($res);
+        print json_encode($ret);
+        break;
     case "listOrginalNames":
         $sql = "SELECT distinct `orginal_name` FROM `files`";
         $res = selectDb($db, $sql);

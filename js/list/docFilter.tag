@@ -54,8 +54,8 @@
 
         this.on('mount', () => {
             filterStore.on('emit', onData );
-            docStore.trigger('loadAllKeywords', {});
-            docStore.on('allKeywords', onKeywords);
+            docStore.trigger('loadHiddenKeywords', {});
+            docStore.on('hiddenKeywords', onKeywords);
         });
 
     </script>
