@@ -3,6 +3,30 @@ function DocStore(){
     this.docs = [];
     const that = this;
 
+    this.on('loadAllKeywords', () => {
+        let request = {
+            url: 'api/',
+            data : {
+                method: "listKeywords"
+            }
+        };
+
+        getData(request).then(function(response) {
+                if (response.status !== 200) {
+                    console.error('Looks like there was a problem. Status Code: ' + response.status);
+                    return;
+                }
+                else {
+                    response.json().then(data =>{
+                        that.trigger('allKeywords', data);
+                    });
+                }
+            })
+            .catch(function(err) {
+                console.error('Fetch Error :-S', err);
+            });
+    }
+
     this.on('loadKeywords', () => {
 
         let request = {
@@ -26,31 +50,6 @@ function DocStore(){
             .catch(function(err) {
                 console.error('Fetch Error :-S', err);
             });
-
-
-        let request = {
-            url: 'api/',
-            data : {
-                method: "listKeywords"
-            }
-        };
-
-        getData(request).then(function(response) {
-                if (response.status !== 200) {
-                    console.error('Looks like there was a problem. Status Code: ' + response.status);
-                    return;
-                }
-                else {
-                    response.json().then(data =>{
-                        that.trigger('allKeywords', data);
-                    });
-                }
-            })
-            .catch(function(err) {
-                console.error('Fetch Error :-S', err);
-            });
-
-
     });
 
     this.on('loadDocs', filter => {

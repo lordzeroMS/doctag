@@ -149,7 +149,7 @@
         this.on('mount', function () {
             docDetailStore.on('docDetails', onData);
             let docStore = new DocStore();
-            docStore.trigger('loadKeywords');
+            docStore.trigger('loadAllKeywords');
             docStore.on('allKeywords', onKeywords);
 
             that.refs.keyword.focus();
