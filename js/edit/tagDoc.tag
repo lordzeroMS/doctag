@@ -6,6 +6,12 @@
                 <option each={keyword in listedKeywords} value="{keyword}">{keyword}</option>
             </datalist>
         </div>
+        <div class="filter-text">Add Hidden Keyword:
+            <input list="listedkeywords" ref="keyword" id="tags" onkeyup="{onTagHidKey}">
+            <datalist id="listedkeywords">
+                <option each={keyword in listedKeywords} value="{keyword}">{keyword}</option>
+            </datalist>
+        </div>
         <div class="filter-text">Date: <input ref="datepicker" type="date" onChange="{onDateChange}"></div>
         <button onclick="{onDownloadClick}" ref="download" class="btn success"><i class="fa fa-fw fa-upload"></i> Download</button>
     </div>
@@ -52,6 +58,41 @@
                     url: 'api/',
                     data: {
                         method: 'addKeyword',
+                        fileID: params.fileID,
+                        keyword: e.target.value
+                    }
+                };
+
+                getData(request).then( function(response) {
+                            if (response.status !== 200) {
+                                console.error('Looks like there was a problem. Status Code: ' + response.status);
+                                return;
+                            }
+                            else {
+                                e.target.value = '';
+                                docDetailStore.trigger('loadDocDetails');
+                                // HACK: comes from global navBar.tag
+                                tagStore.trigger('loadTags');
+                            }
+                        }
+                    )
+                    .catch(function(err) {
+                        console.error('Fetch Error :-S', err);
+                    });
+
+
+            }
+        };
+
+
+        this.onTagHidKey = e => {
+
+            if (e.which == 13) {
+
+                let request = {
+                    url: 'api/',
+                    data: {
+                        method: 'addHiddenKeyword',
                         fileID: params.fileID,
                         keyword: e.target.value
                     }

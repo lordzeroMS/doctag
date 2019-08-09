@@ -131,6 +131,17 @@ switch ($method) {
         mysqli_free_result($res);
         print json_encode($ret);
         break;
+    case "listVisibleKeywords":
+        $sql = "SELECT keyword FROM keywords where type = 'visible' and id in (select keywordID from fileToKeywordMap a join files b on a.fileID = b.id where b.user = '".
+            $user."') order by 1;";
+        $res = selectDb($db, $sql);
+        $obj = mysqli_fetch_all($res);
+        $ret = array();
+        foreach($obj as $row)
+            array_push($ret, $row[0]);
+        mysqli_free_result($res);
+        print json_encode($ret);
+        break;
     case "listOrginalNames":
         $sql = "SELECT distinct `orginal_name` FROM `files`";
         $res = selectDb($db, $sql);
@@ -174,12 +185,26 @@ switch ($method) {
             print "parameter missing";
             exit(1);
         }
-        $sql = "INSERT INTO `keywords` (`keyword`) VALUES ('".str_replace('|', '_', trim($keyword))."');";
+        $sql = "INSERT INTO `keywords` (`keyword`) VALUES ('".str_replace('|', '_', trim($keyword))."', 'visible');";
         mysqli_query($db, $sql);
         $sql = "INSERT INTO `fileToKeywordMap` (`fileID`,`keywordID`) VALUES(".
             $fileID.
             ",(select min(id) from keywords where keyword = '".
-            $keyword."'));";
+            $keyword."' and type = 'visible'));";
+        selectDb($db, $sql);
+        break;
+    case "addHiddenKeyword":
+        if (trim($keyword) == false or $fileID == Null){
+            header('HTTP/1.1 500 Internal Server Error');
+            print "parameter missing";
+            exit(1);
+        }
+        $sql = "INSERT INTO `keywords` (`keyword`) VALUES ('".str_replace('|', '_', trim($keyword))."', 'hidden');";
+        mysqli_query($db, $sql);
+        $sql = "INSERT INTO `fileToKeywordMap` (`fileID`,`keywordID`) VALUES(".
+            $fileID.
+            ",(select min(id) from keywords where keyword = '".
+            $keyword."' and type = 'hidden'));";
         selectDb($db, $sql);
         break;
     case "listPDF":

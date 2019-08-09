@@ -8,7 +8,7 @@ function DocStore(){
         let request = {
             url: 'api/',
             data : {
-                method: "listKeywords"
+                method: "listVisibleKeywords"
             }
         };
 

@@ -83,7 +83,8 @@ CREATE TABLE IF NOT EXISTS `fileToKeywordMap` (
 
 CREATE TABLE IF NOT EXISTS `keywords` (
 `id` int(11) NOT NULL,
-  `keyword` varchar(45) DEFAULT NULL
+  `keyword` varchar(45) DEFAULT NULL,
+  `type` ENUM('visible','hidden') NOT NULL DEFAULT 'visible'
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 --
@@ -106,7 +107,7 @@ ALTER TABLE `fileToKeywordMap`
 -- Indizes für die Tabelle `keywords`
 --
 ALTER TABLE `keywords`
- ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `keyword_UNIQUE` (`keyword`);
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `keyword_UNIQUE` (`keyword`, `type`);
 
 ```
 
