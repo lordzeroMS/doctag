@@ -160,7 +160,7 @@ switch ($method) {
         break;
     case "listVisibleKeywords":
         if (!empty($where_condition)){
-            $where_sql = " and id in (SELECT a.id FROM files a where ".join(' and ', $where_condition).")";
+            $where_sql = " and id in (SELECT keywordID from fileToKeywordMap where fileID in (SELECT a.id FROM files a where ".join(' and ', $where_condition)."))";
         } else {
             $where_sql = "";
         }
