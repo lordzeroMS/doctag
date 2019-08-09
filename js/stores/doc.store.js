@@ -25,7 +25,7 @@ function DocStore(){
             .catch(function(err) {
                 console.error('Fetch Error :-S', err);
             });
-    }
+    });
 
     this.on('loadKeywords', () => {
 
