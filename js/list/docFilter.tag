@@ -21,7 +21,7 @@
             filterStore.trigger('init');
         };
 
-        function onData({dateFrom:from = '', dateTo:to = '', searchValue:search = '', searchKeyValue:searchkey = ''}){
+        function onData({dateFrom:from = '', dateTo:to = '', searchValue:search = '', searchKeyword:searchkey = ''}){
             that.refs.datefrom.value = from;
             that.refs.dateto.value = to;
             that.refs.searchfield.value = search;
