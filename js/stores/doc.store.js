@@ -28,7 +28,27 @@ function DocStore(){
             });
 
 
+        let request = {
+            url: 'api/',
+            data : {
+                method: "listKeywords"
+            }
+        };
 
+        getData(request).then(function(response) {
+                if (response.status !== 200) {
+                    console.error('Looks like there was a problem. Status Code: ' + response.status);
+                    return;
+                }
+                else {
+                    response.json().then(data =>{
+                        that.trigger('allKeywords', data);
+                    });
+                }
+            })
+            .catch(function(err) {
+                console.error('Fetch Error :-S', err);
+            });
 
 
     });
@@ -43,6 +63,7 @@ function DocStore(){
                 date_to: filter.dateTo || '',
                 keyword: Array.isArray(filter.keyword) ? filter.keyword.join('|') : filter.keyword,
                 search_field: filter.searchValue,
+                search_keyword: filter.searchKeyword,
             }
         };
 

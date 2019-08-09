@@ -150,7 +150,7 @@
             docDetailStore.on('docDetails', onData);
             let docStore = new DocStore();
             docStore.trigger('loadKeywords');
-            docStore.on('keywords', onKeywords);
+            docStore.on('allKeywords', onKeywords);
 
             that.refs.keyword.focus();
         });

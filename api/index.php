@@ -71,6 +71,9 @@ if(isset($_GET['search_field'])) {
 if(isset($_GET['keyword'])) {
     $keyword = mysqli_real_escape_string($db, $_GET["keyword"]);
 }
+if(isset($_GET['search_keyword'])) {
+    $search_keyword = mysqli_real_escape_string($db, $_GET["search_keyword"]);
+}
 if(isset($_GET['date'])) {
     $date = mysqli_real_escape_string($db, $_GET["date"]);
 }
@@ -215,6 +218,10 @@ switch ($method) {
         }
         if (!empty($date_from)){
             array_push($where_condition, " date >= '".$date_from."' ");
+        }
+        if (!empty($search_keyword)){
+                array_push($where_condition, " a.id in (SELECT fileID FROM `keywords` a	join `fileToKeywordMap` b
+                on a.id = b.keywordID where keyword = '".$search_keyword."') ");
         }
         if (!empty($keyword)){
             $k_list = explode('|', $keyword);
