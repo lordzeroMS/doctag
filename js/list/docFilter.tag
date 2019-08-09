@@ -3,7 +3,7 @@
         <div class="filter-text">Date From: <input type="date" ref="datefrom" oninput="{onDateFromInput}"></div>
         <div class="filter-text">Date To: <input type="date" ref="dateto" oninput="{onDateToInput}"></div>
         <div class="filter-text">Hidden Keyword:
-            <input list="listedkeywords" type="text" ref="searchfield" onkeydown="{onSearchKeywordKeydown}">
+            <input list="listedkeywords" type="text" ref="searchfieldkeyword" onkeydown="{onSearchKeywordKeydown}">
             <datalist id="listedkeywords">
                 <option each={keyword in listedKeywords} value="{keyword}">{keyword}</option>
             </datalist>
@@ -21,10 +21,11 @@
             filterStore.trigger('init');
         };
 
-        function onData({dateFrom:from = '', dateTo:to = '', searchValue:search = ''}){
+        function onData({dateFrom:from = '', dateTo:to = '', searchValue:search = '', searchKeyValue:searchkey = ''}){
             that.refs.datefrom.value = from;
             that.refs.dateto.value = to;
             that.refs.searchfield.value = search;
+            that.refs.searchfieldkeyword.value = searchkey;
         }
 
         function onKeywords(keywords) {
