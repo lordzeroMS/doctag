@@ -26,7 +26,7 @@
         };
 
         this.on('mount', function(){
-            docStore.trigger('loadKeywords');
+            docStore.trigger('loadKeywords', {});
             docStore.on('keywords', onData);
             filterStore.on('emit', onFilterEmit);
         });

@@ -37,6 +37,7 @@ function FilterStore(){
 
     this.on('emit', data =>{
         docStore.trigger('loadDocs', data );
+        docStore.trigger('loadKeywords', data );
     });
 
 }

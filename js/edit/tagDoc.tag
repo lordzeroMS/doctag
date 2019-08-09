@@ -156,7 +156,7 @@
         this.on('mount', function () {
             docDetailStore.on('docDetails', onData);
             let docStore = new DocStore();
-            docStore.trigger('loadKeywords');
+            docStore.trigger('loadKeywords', {});
             docStore.trigger('loadHiddenKeywords');
             docStore.on('keywords', onVisibleKeywords);
             docStore.on('hiddenKeywords', onHiddenKeywords);
