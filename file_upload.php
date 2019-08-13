@@ -62,6 +62,7 @@ $uploadfile = $uploaddir . $uniqid .".pdf";
 
 if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
 
+    header('HTTP/1.1 200 OK');
     $db = connectDB();
     exec("convert -density 50  \"".$uploadfile."[0]\" \"".$uploadfile.".png\"");
     exec("convert -density 300 \"".$uploadfile."\" -depth 8 -strip -background white -alpha off \"".$uploadfile.".tiff\"");
@@ -77,16 +78,16 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
     $uploadfile.".png','".mysqli_real_escape_string($db, $user)."',
     '".mysqli_real_escape_string($db, $ocr)."', '".mysqli_real_escape_string($db, $ext)."');";
     selectDb($db, $sql);
-    $last_id = $db->insert_id;
+    $last_id = mysqli_insert_id($db);
+    print $last_id;
     close($db, True);
-    echo $last_id;
 
 } else {
     header('HTTP/1.1 500 Internal Server Error');
     echo "upload failed\n";
 }
 
-
+exit(0);
 
 ?>
 
