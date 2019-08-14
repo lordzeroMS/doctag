@@ -83,7 +83,6 @@ function DocStore(){
     });
 
     this.on('loadDocs', filter => {
-        console.log(filter);
         let request = {
             url: 'api/',
             data : {

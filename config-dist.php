@@ -12,3 +12,7 @@ $db_user = "pass";
 $db_pass = "user";
 
 $ocr_lang = "deu";
+
+$default_lang = "de";
+
+
