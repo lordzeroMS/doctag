@@ -1,18 +1,18 @@
 <tag-doc>
     <div class="filter-box">
-        <div class="filter-text">Add Keyword:
+        <div class="filter-text"><lang-text ref="Add_Keyword"></lang-text>:
             <input list="listedvisiblekeywords" ref="keyword" id="tags" onkeyup="{onTagKey}">
             <datalist id="listedvisiblekeywords">
                 <option each={keyword in listedVisibleKeywords} value="{keyword}">{keyword}</option>
             </datalist>
         </div>
-        <div class="filter-text">Add Hidden Keyword:
-            <input list="listedhiddenkeywords" ref="keyword" id="tags" onkeyup="{onTagHidKey}">
+        <div class="filter-text"><lang-text ref="Add_Hidden_Keyword"></lang-text>:
+            <input list="listedhiddenkeywords" ref="keywordHidden" id="tags" onkeyup="{onTagHidKey}">
             <datalist id="listedhiddenkeywords">
                 <option each={keyword in listedHiddenKeywords} value="{keyword}">{keyword}</option>
             </datalist>
         </div>
-        <div class="filter-text">Date: <input ref="datepicker" type="date" onChange="{onDateChange}"></div>
+        <div class="filter-text"><lang-text ref="Date"></lang-text>: <input ref="datepicker" type="date" onChange="{onDateChange}"></div>
         <button onclick="{onDownloadClick}" ref="download" class="btn success"><i class="fa fa-fw fa-upload"></i> Download</button>
     </div>
     <script>
@@ -31,7 +31,7 @@
             console.log('document link '+documentLink);
             let datepicker = that.refs.datepicker;
             datepicker.value = data.date;
-            onKeywords(docKeywords);
+            onVisibleKeywords(docKeywords);
             that.update();
         }
 

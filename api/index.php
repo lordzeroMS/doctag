@@ -7,6 +7,7 @@
  */
 
 require_once '../config.php';
+require_once '../lang.php';
 
 function selectDb($db, $sql)
 {
@@ -118,7 +119,7 @@ if (!empty($date_from)){
 }
 if (!empty($search_keyword)){
         array_push($where_condition, " a.id in (SELECT fileID FROM `keywords` a	join `fileToKeywordMap` b
-        on a.id = b.keywordID where keyword = '".$search_keyword."') ");
+        on a.id = b.keywordID where keyword like '%".$search_keyword."%') ");
 }
 if (!empty($keyword)){
     $k_list = explode('|', $keyword);
@@ -133,6 +134,9 @@ if (!empty($search)){
 }
 
 switch ($method) {
+    case "lang":
+        print json_encode($lang[$default_lang]);
+        break;
     case "listEmpty":
         if ($fileID == Null){
             $fileID = 0;

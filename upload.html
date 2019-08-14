@@ -12,8 +12,10 @@
     <link rel="stylesheet" href="css/dropzone-custom.css">
     <script src="js/tools.js"></script>
     <script src="js/libs/dropzone.js"></script>
+    <script src="js/stores/lang.store.js"></script>
     <script src="js/stores/tag.store.js"></script>
     <script type="riot/tag" src="js/navBar.tag"></script>
+    <script type="riot/tag" src="js/lang.tag"></script>
     <script src="js/libs/riot/riot+compiler.min.js"></script>
 </head>
 <body>
@@ -21,7 +23,7 @@
     <nav-bar buttons="{['back']}"></nav-bar>
 
     <form action="file_upload.php" class="dropzone" id="dzone">
-        <div class="dz-message" data-dz-message><span>Drop files here or click to upload</span></div>
+        <div class="dz-message" data-dz-message><span><lang-text ref="upload_text"></lang-text></span></div>
     </form>
     <script>
         riot.mount('*');
