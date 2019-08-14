@@ -13,7 +13,7 @@
         this.on('mount', function () {
             langStore.trigger('loadLang');
             langStore.on('lang', onData);
-            console.log(this.opts.ref);
+
             this.text_in_tag = this.opts.ref;
             this.update();
         });
