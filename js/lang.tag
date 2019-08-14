@@ -11,7 +11,6 @@
         }
 
         this.on('mount', function () {
-            langStore.trigger('loadLang');
             langStore.on('lang', onData);
 
             this.text_in_tag = this.opts.ref;
