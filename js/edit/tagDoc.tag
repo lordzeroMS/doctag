@@ -7,7 +7,7 @@
             </datalist>
         </div>
         <div class="filter-text"><lang-text ref="Add_Hidden_Keyword"></lang-text>:
-            <input list="listedhiddenkeywords" ref="keyword" id="tags" onkeyup="{onTagHidKey}">
+            <input list="listedhiddenkeywords" ref="keywordHidden" id="tags" onkeyup="{onTagHidKey}">
             <datalist id="listedhiddenkeywords">
                 <option each={keyword in listedHiddenKeywords} value="{keyword}">{keyword}</option>
             </datalist>
