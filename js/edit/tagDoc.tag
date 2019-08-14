@@ -31,7 +31,7 @@
             console.log('document link '+documentLink);
             let datepicker = that.refs.datepicker;
             datepicker.value = data.date;
-            onKeywords(docKeywords);
+            onVisibleKeywords(docKeywords);
             that.update();
         }
 
