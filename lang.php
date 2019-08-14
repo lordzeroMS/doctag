@@ -13,6 +13,7 @@ $lang = [
         "Date" => "Datum",
         "Date_From" => "Datum von",
         "Date_To" => "Datum bis",
+        "upload_text" => "Schiebe Dateien hierhin oder Klick auf Hochladen",
         "Hidden_Keyword" => "Name",
         "Search" => "Suchen"
     ],
@@ -28,6 +29,7 @@ $lang = [
         "Date" => "Date",
         "Date_From" => "Date From",
         "Date_To" => "Date To",
+        "upload_text" => "Drop files here or click to upload",
         "Hidden_Keyword" => "Hidden Keyword",
         "Search" => "Search"
     ]
