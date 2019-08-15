@@ -33,7 +33,7 @@ function LangStore(){
                     console.error('Fetch Error :-S', err);
             });
         } else {
-            if (_data.length == 0) {
+            if (_data.length > 0) {
                 tags.forEach(function(tag) {
                     tag.trigger('lang', _data[0]);
                 });
