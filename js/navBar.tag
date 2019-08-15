@@ -76,7 +76,6 @@
 
         // put store global
         tagStore = new TagStore();
-        langStore = new LangStore();
 
         function onData(data){
             that.noTagDocId = data.empty_keyword;
@@ -88,7 +87,6 @@
 
         this.on('mount', function () {
             tagStore.trigger('loadTags');
-            langStore.trigger('loadLang');
             tagStore.on('tags', onData);
 
 
