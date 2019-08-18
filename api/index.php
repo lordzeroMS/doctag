@@ -151,6 +151,16 @@ switch ($method) {
         mysqli_free_result($res);
         print json_encode($ret);
         break;
+    case "listEmptyHiddenKeywords":
+        $sql = "SELECT id from files where id not in (select fileID from fileToKeywordMap where keywordID in (select id from keywords where type = 'hidden')) and user = '".$user."' order by rand()";
+        $res = selectDb($db, $sql);
+        $obj = mysqli_fetch_all($res);
+        $ret = array();
+        foreach($obj as $row)
+            array_push($ret, $row[0]);
+        mysqli_free_result($res);
+        print json_encode($ret);
+        break;
     case "listKeywords":
         $sql = "SELECT keyword FROM keywords where id in (select keywordID from fileToKeywordMap a join files b on a.fileID = b.id where b.user = '".
             $user."') order by 1;";
