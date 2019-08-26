@@ -17,6 +17,7 @@
     </div>
     <script>
         const that = this;
+        const docStore = new DocStore();
         let allKeywords = [];
         let docKeywords = [];
         that.listedVisibleKeywords = [];
@@ -161,7 +162,6 @@
 
         this.on('mount', function () {
             docDetailStore.on('docDetails', onData);
-            let docStore = new DocStore();
             docStore.trigger('loadKeywords', {});
             docStore.trigger('loadHiddenKeywords', {});
             docStore.on('keywords', onVisibleKeywords);

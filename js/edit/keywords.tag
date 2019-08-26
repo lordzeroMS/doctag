@@ -4,6 +4,7 @@
     </div>
     <script>
         const that = this;
+        const docStore = new DocStore();
 
         function onData(data){
             that.keywords = data.keywords;
