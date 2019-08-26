@@ -32,6 +32,8 @@
                             else {
                                 docDetailStore.trigger('loadDocDetails');
                                 tagStore.trigger('loadTags');
+                                docStore.trigger('loadKeywords', {});
+                                docStore.trigger('loadHiddenKeywords', {});
                             }
                         }
                     )

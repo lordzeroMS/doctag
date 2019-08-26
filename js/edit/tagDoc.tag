@@ -80,6 +80,9 @@
                                 docDetailStore.trigger('loadDocDetails');
                                 // HACK: comes from global navBar.tag
                                 tagStore.trigger('loadTags');
+
+                                docStore.trigger('loadKeywords', {});
+                                docStore.trigger('loadHiddenKeywords', {});
                             }
                         }
                     )
@@ -115,6 +118,9 @@
                                 docDetailStore.trigger('loadDocDetails');
                                 // HACK: comes from global navBar.tag
                                 tagStore.trigger('loadTags');
+
+                                docStore.trigger('loadKeywords', {});
+                                docStore.trigger('loadHiddenKeywords', {});
                             }
                         }
                     )
@@ -157,7 +163,7 @@
             docDetailStore.on('docDetails', onData);
             let docStore = new DocStore();
             docStore.trigger('loadKeywords', {});
-            docStore.trigger('loadHiddenKeywords');
+            docStore.trigger('loadHiddenKeywords', {});
             docStore.on('keywords', onVisibleKeywords);
             docStore.on('hiddenKeywords', onHiddenKeywords);
 
