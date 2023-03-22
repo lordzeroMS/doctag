@@ -135,6 +135,8 @@ if (!empty($search)){
 
 switch ($method) {
     case "lang":
+      if( empty($default_lang) or 
+          !isset($default_lang) ) $default_lang = "en";
         print json_encode($lang[$default_lang]);
         break;
     case "listEmpty":

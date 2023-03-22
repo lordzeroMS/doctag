@@ -7,6 +7,7 @@
 
         function onData(data){
             that.keywords = data.keywords;
+            console.log('bla',data);
             that.update();
         };
 
