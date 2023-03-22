@@ -4,16 +4,20 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>DocTag</title>
-        <link rel="stylesheet" href="css/jquery-ui.css">
+        <link rel="shortcut icon" type="image/x-icon" href="images/fav.ico">
         <link rel="stylesheet" href="css/fontawesome/fontawesome-all.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/list.css">
-        <script src="js/libs/jquery/jquery-1.12.4.js"></script>
-        <script src="js/libs/jquery/jquery-ui.js"></script>
+        <script src="js/tools.js"></script>
         <script type="riot/tag" src="js/navBar.tag"></script>
+        <script type="riot/tag" src="js/lang.tag"></script>
         <script type="riot/tag" src="js/list/keywords.tag"></script>
         <script type="riot/tag" src="js/list/docFilter.tag"></script>
         <script type="riot/tag" src="js/list/docList.tag"></script>
+        <script src="js/stores/doc.store.js"></script>
+        <script src="js/stores/filter.store.js"></script>
+        <script src="js/stores/tag.store.js"></script>
+        <script src="js/stores/lang.store.js"></script>
         <script src="js/libs/riot/riot+compiler.min.js"></script>
     </head>
     <body>
@@ -26,68 +30,8 @@
 
         <doc-list></doc-list>
 
-
     <script>
         riot.mount('*');
-
-        function FilterStore(){
-            riot.observable(this);
-            this.filter = {};
-            const that = this;
-
-            this.on('add', obj => {
-                let key = Object.keys(obj)[0];
-                that.filter[key] = obj[key];
-                this.trigger('emit', that.filter);
-            });
-
-            this.on('remove', obj => {
-                let key = Object.keys(obj)[0];
-                delete that.filter[key];
-                this.trigger('emit', that.filter);
-            });
-
-            this.on('init', () => {
-                this.filter = {};
-                this.trigger('emit', that.filter);
-            });
-
-            this.on('emit', data =>{
-                docStore.trigger('loadDocs', data );
-            });
-
-        }
-
-        function DocStore(){
-            riot.observable(this);
-            this.docs = [];
-            const that = this;
-
-            this.on('loadKeywords', () => {
-                $.getJSON("api/index.php?method=listKeywords", null)
-                    .done(function (data) {
-                        that.trigger('keywords', data);
-                    });
-            });
-
-            this.on('loadDocs', filter => {
-
-                let args = {
-                    method: "listPDF",
-                    date_from: filter.dateFrom,
-                    date_to: filter.dateTo,
-                    keyword: filter.keyword,
-                    search_field: filter.searchValue,
-                };
-
-                $.getJSON("api/index.php", args)
-                    .done(function (data) {
-                        that.trigger('docs', data);
-                    });
-            });
-        }
-
-
 
         let docStore = new DocStore();
         let filterStore = new FilterStore();

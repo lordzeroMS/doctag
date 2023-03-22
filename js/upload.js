@@ -1,7 +1,8 @@
 Dropzone.autoDiscover = false;
 $(function () {
 
-    $("#dzone").dropzone({
+    let dzone = document.querySelector('#dzone');
+    dzone.dropzone({
         url: "./file_upload.php",
         acceptedFiles: "application/pdf",
         success: function (file, responseText) {

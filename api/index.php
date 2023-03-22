@@ -7,6 +7,7 @@
  */
 
 require_once '../config.php';
+require_once '../lang.php';
 
 function selectDb($db, $sql)
 {
@@ -71,6 +72,9 @@ if(isset($_GET['search_field'])) {
 if(isset($_GET['keyword'])) {
     $keyword = mysqli_real_escape_string($db, $_GET["keyword"]);
 }
+if(isset($_GET['search_keyword'])) {
+    $search_keyword = mysqli_real_escape_string($db, $_GET["search_keyword"]);
+}
 if(isset($_GET['date'])) {
     $date = mysqli_real_escape_string($db, $_GET["date"]);
 }
@@ -105,7 +109,34 @@ if ($fileID != Null){
     mysqli_free_result($res);
 }
 
+$where_condition = array();
+array_push($where_condition, " a.user = '".$user."' ");
+if (!empty($date_to)){
+    array_push($where_condition, " date <= '".$date_to."' ");
+}
+if (!empty($date_from)){
+    array_push($where_condition, " date >= '".$date_from."' ");
+}
+if (!empty($search_keyword)){
+        array_push($where_condition, " a.id in (SELECT fileID FROM `keywords` a	join `fileToKeywordMap` b
+        on a.id = b.keywordID where keyword like '%".$search_keyword."%') ");
+}
+if (!empty($keyword)){
+    $k_list = explode('|', $keyword);
+    foreach ($k_list as $k){
+        array_push($where_condition, " a.id in (SELECT fileID FROM `keywords` a	join `fileToKeywordMap` b
+        on a.id = b.keywordID where keyword = '".$k."') ");
+    }
+
+}
+if (!empty($search)){
+    array_push($where_condition, " match(`ocrtext`, `pdftext`) against ( '".$search."' in boolean mode) ");
+}
+
 switch ($method) {
+    case "lang":
+        print json_encode($lang[$default_lang]);
+        break;
     case "listEmpty":
         if ($fileID == Null){
             $fileID = 0;
@@ -122,6 +153,33 @@ switch ($method) {
         break;
     case "listKeywords":
         $sql = "SELECT keyword FROM keywords where id in (select keywordID from fileToKeywordMap a join files b on a.fileID = b.id where b.user = '".
+            $user."') order by 1;";
+        $res = selectDb($db, $sql);
+        $obj = mysqli_fetch_all($res);
+        $ret = array();
+        foreach($obj as $row)
+            array_push($ret, $row[0]);
+        mysqli_free_result($res);
+        print json_encode($ret);
+        break;
+    case "listVisibleKeywords":
+        if (!empty($where_condition)){
+            $where_sql = " and id in (SELECT keywordID from fileToKeywordMap where fileID in (SELECT a.id FROM files a where ".join(' and ', $where_condition)."))";
+        } else {
+            $where_sql = "";
+        }
+        $sql = "SELECT keyword FROM keywords where type = 'visible' and id in (select keywordID from fileToKeywordMap a join files b on a.fileID = b.id where b.user = '".
+            $user."') ".$where_sql." order by 1;";
+        $res = selectDb($db, $sql);
+        $obj = mysqli_fetch_all($res);
+        $ret = array();
+        foreach($obj as $row)
+            array_push($ret, $row[0]);
+        mysqli_free_result($res);
+        print json_encode($ret);
+        break;
+    case "listHiddenKeywords":
+        $sql = "SELECT keyword FROM keywords where type = 'hidden' and id in (select keywordID from fileToKeywordMap a join files b on a.fileID = b.id where b.user = '".
             $user."') order by 1;";
         $res = selectDb($db, $sql);
         $obj = mysqli_fetch_all($res);
@@ -174,34 +232,29 @@ switch ($method) {
             print "parameter missing";
             exit(1);
         }
-        $sql = "INSERT INTO `keywords` (`keyword`) VALUES ('".str_replace('|', '_', trim($keyword))."');";
+        $sql = "INSERT INTO `keywords` (`keyword`, `type`) VALUES ('".str_replace('|', '_', trim($keyword))."', 'visible');";
         mysqli_query($db, $sql);
         $sql = "INSERT INTO `fileToKeywordMap` (`fileID`,`keywordID`) VALUES(".
             $fileID.
             ",(select min(id) from keywords where keyword = '".
-            $keyword."'));";
+            $keyword."' and type = 'visible'));";
+        selectDb($db, $sql);
+        break;
+    case "addHiddenKeyword":
+        if (trim($keyword) == false or $fileID == Null){
+            header('HTTP/1.1 500 Internal Server Error');
+            print "parameter missing";
+            exit(1);
+        }
+        $sql = "INSERT INTO `keywords` (`keyword`, `type`) VALUES ('".str_replace('|', '_', trim($keyword))."', 'hidden');";
+        mysqli_query($db, $sql);
+        $sql = "INSERT INTO `fileToKeywordMap` (`fileID`,`keywordID`) VALUES(".
+            $fileID.
+            ",(select min(id) from keywords where keyword = '".
+            $keyword."' and type = 'hidden'));";
         selectDb($db, $sql);
         break;
     case "listPDF":
-        $where_condition = array();
-        array_push($where_condition, " a.user = '".$user."' ");
-        if (!empty($date_to)){
-            array_push($where_condition, " date <= '".$date_to."' ");
-        }
-        if (!empty($date_from)){
-            array_push($where_condition, " date >= '".$date_from."' ");
-        }
-        if (!empty($keyword)){
-            $k_list = explode('|', $keyword);
-            foreach ($k_list as $k){
-                array_push($where_condition, " a.id in (SELECT fileID FROM `keywords` a	join `fileToKeywordMap` b
-                on a.id = b.keywordID where keyword = '".$k."') ");
-            }
-
-        }
-        if (!empty($search)){
-            array_push($where_condition, " match(`ocrtext`, `pdftext`) against ( '".$search."' in boolean mode) ");
-        }
         if (!empty($where_condition)){
             $where_sql = " where ".join(' and ', $where_condition);
         } else {

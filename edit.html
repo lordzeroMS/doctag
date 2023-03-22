@@ -4,15 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>DocTag</title>
-    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="shortcut icon" type="image/x-icon" href="images/fav.ico">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/edit.css">
     <link rel="stylesheet" href="css/fontawesome/fontawesome-all.css">
-    <script src="js/libs/jquery/jquery-1.12.4.js"></script>
-    <script src="js/libs/jquery/jquery-ui.js"></script>
+    <script src="js/tools.js"></script>
+    <script src="js/libs/underscore/underscore.js"></script>
+    <script src="js/stores/docDetail.store.js"></script>
+    <script type="riot/tag" src="js/lang.tag"></script>
     <script type="riot/tag" src="js/navBar.tag"></script>
     <script type="riot/tag" src="js/edit/keywords.tag"></script>
     <script type="riot/tag" src="js/edit/tagDoc.tag"></script>
+    <script src="js/stores/doc.store.js"></script>
+    <script src="js/stores/tag.store.js"></script>
+    <script src="js/stores/lang.store.js"></script>
     <script src="js/libs/riot/riot+compiler.min.js"></script>
 </head>
 <body>
@@ -22,13 +27,12 @@
 <keywords></keywords>
 
 
-<tag-doc data-date=""></tag-doc>
+<tag-doc></tag-doc>
 
 <div class="img-box">
-    <div class="images">
-        <object id="pdf" type="application/pdf"></object>
-    </div>
+    <div class="images"></div>
 </div>
+
 <script>
     riot.mount('*');
 
@@ -40,28 +44,15 @@
         );
 
     function onData(data){
-        console.log(data);
-        let pdfObject = $("#pdf");
-        // only fill if it is empty
-        if( !pdfObject.attr("data")){
-            pdfObject.attr("data", data["pdfLocation"]);
-        };
+        let pdfObj = document.createElement("object");
+        pdfObj.setAttribute('id', 'pdf');
+        pdfObj.setAttribute('type', 'application/pdf');
+        pdfObj.setAttribute('data', data.pdfLocation);
+        if(document.querySelector('.img-box .images').childElementCount === 0){
+            document.querySelector('.img-box .images').appendChild(pdfObj);
+        }
     }
 
-    function DocDetailStore(){
-        riot.observable(this);
-        this.doc = {};
-        const that = this;
-
-
-        this.on('loadDocDetails', filter => {
-            $.getJSON("api/index.php?method=detailsPDF&fileID=" + params.fileID, null)
-                .done(function (data) {
-                    that.doc = data;
-                    that.trigger('docDetails', data);
-                });
-        });
-    }
 
     let docDetailStore = new DocDetailStore();
     docDetailStore.trigger('loadDocDetails');

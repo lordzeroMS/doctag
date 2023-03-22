@@ -4,25 +4,26 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>DocTag</title>
-    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="shortcut icon" type="image/x-icon" href="images/fav.ico">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/upload.css">
     <link rel="stylesheet" href="css/fontawesome/fontawesome-all.css">
     <link rel="stylesheet" href="css/dropzone.css">
     <link rel="stylesheet" href="css/dropzone-custom.css">
-    <script src="js/libs/jquery/jquery-1.12.4.js"></script>
-    <script src="js/libs/jquery/jquery-ui.js"></script>
+    <script src="js/tools.js"></script>
     <script src="js/libs/dropzone.js"></script>
+    <script src="js/stores/lang.store.js"></script>
+    <script src="js/stores/tag.store.js"></script>
     <script type="riot/tag" src="js/navBar.tag"></script>
+    <script type="riot/tag" src="js/lang.tag"></script>
     <script src="js/libs/riot/riot+compiler.min.js"></script>
-    <!--<script src="js/upload.js"></script>-->
 </head>
 <body>
 
     <nav-bar buttons="{['back']}"></nav-bar>
 
     <form action="file_upload.php" class="dropzone" id="dzone">
-        <div class="dz-message" data-dz-message><span>Drop files here or click to upload</span></div>
+        <div class="dz-message" data-dz-message><span><lang-text ref="upload_text"></lang-text></span></div>
     </form>
     <script>
         riot.mount('*');

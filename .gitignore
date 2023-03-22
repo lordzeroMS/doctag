@@ -1,3 +1,5 @@
 config.php
 .idea/
-documents/
+.ht*
+documents/*.pdf
+documents/*.png

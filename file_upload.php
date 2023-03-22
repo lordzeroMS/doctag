@@ -61,29 +61,33 @@ $uploaddir = 'documents/';
 $uploadfile = $uploaddir . $uniqid .".pdf";
 
 if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
-    echo "File is valid, and was successfully uploaded.\n";
-	$db = connectDB();
-        exec("convert -density 50  \"".$uploadfile."[0]\" \"".$uploadfile.".png\"");
-        exec("convert -density 300 \"".$uploadfile."\" -depth 8 -strip -background white -alpha off \"".$uploadfile.".tiff\"");
-        exec("tesseract -l deu \"".$uploadfile.".tiff\" \"".$uploadfile.".ocr\"");
-        exec("pdftotext \"".$uploadfile."\" \"".$uploadfile.".ext\"");
-	unlink($uploadfile.".tiff");
-        $ocr = file_get_contents($uploadfile.".ocr.txt");
-        $ext = file_get_contents($uploadfile.".ext");
-	unlink($uploadfile.".ocr.txt");
-	unlink($uploadfile.".ext");
-        $sql = "INSERT INTO `files` (`pdfLocation`,`orginal_name`,`tumbnail`,`user`, `ocrtext`, `pdftext`) VALUES ('".$uploadfile."', '".
-	  mysqli_real_escape_string($db, $_FILES['file']['name'])."','".
-          $uploadfile.".png','".mysqli_real_escape_string($db, $user)."',
-          '".mysqli_real_escape_string($db, $ocr)."', '".mysqli_real_escape_string($db, $ext)."');";
-        selectDb($db, $sql);
-        close($db, True);
+
+    header('HTTP/1.1 200 OK');
+    $db = connectDB();
+    exec("convert -density 50  \"".$uploadfile."[0]\" \"".$uploadfile.".png\"");
+    exec("convert -density 300 \"".$uploadfile."\" -depth 8 -strip -background white -alpha off \"".$uploadfile.".tiff\"");
+    exec("tesseract -l ".$ocr_lang." \"".$uploadfile.".tiff\" \"".$uploadfile.".ocr\"");
+    exec("pdftotext \"".$uploadfile."\" \"".$uploadfile.".ext\"");
+    unlink($uploadfile.".tiff");
+    $ocr = file_get_contents($uploadfile.".ocr.txt");
+    $ext = file_get_contents($uploadfile.".ext");
+    unlink($uploadfile.".ocr.txt");
+    unlink($uploadfile.".ext");
+    $sql = "INSERT INTO `files` (`pdfLocation`,`orginal_name`,`tumbnail`,`user`, `ocrtext`, `pdftext`) VALUES ('".$uploadfile."', '".
+    mysqli_real_escape_string($db, $_FILES['file']['name'])."','".
+    $uploadfile.".png','".mysqli_real_escape_string($db, $user)."',
+    '".mysqli_real_escape_string($db, $ocr)."', '".mysqli_real_escape_string($db, $ext)."');";
+    selectDb($db, $sql);
+    $last_id = mysqli_insert_id($db);
+    print $last_id;
+    close($db, True);
+
 } else {
-            header('HTTP/1.1 500 Internal Server Error');
+    header('HTTP/1.1 500 Internal Server Error');
     echo "upload failed\n";
 }
 
-
+exit(0);
 
 ?>
 

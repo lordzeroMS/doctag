@@ -1,13 +1,52 @@
+@font-face {
+    font-family: 'Lato';
+    src: url('webfonts/Lato/Lato-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('webfonts/Lato/Lato-Light.ttf') format('truetype');
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('webfonts/Montserrat/Montserrat-Regular.ttf') format('truetype');
+}
+
 html {
     height:100%;
 }
+
+button {
+    font-family: 'Montserrat', sans-serif;
+}
+button:focus {
+    outline: none;
+}
+
 body {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
     margin: 0;
-    font-family: Verdana;
     display: flex;
     flex-direction: column;
     height:100%;
 }
+
+input {
+    background-color: #eee;
+    border: none;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+
+input:focus {
+    outline: none;
+    border-bottom: 2px solid #5995C8;
+}
+
 .logo {
     height: 31px;
     position: absolute;
@@ -28,33 +67,39 @@ body {
 .btn {
     color: white;
     border: none;
-    border-radius: 4px;
+    padding: 6px 12px;
     margin-left: 12px;
     font-size: 12px;
-    padding: 8px;
     cursor: pointer;
     position: relative;
 }
 
 .btn.success {
-    background-color: #94DE45;
+    background-color: #3BB41B;
 }
 .btn.success:hover {
-    background-color: #AFE674;
+    filter: saturate(200%);;
 }
 
 .btn.danger {
-    background-color: #EF4836;
+    background-color: #CD1F33;
 }
 .btn.danger:hover {
-    background-color: #F37668;
+    filter: saturate(125%);
 }
 
 .btn.default {
-    background-color: #2F8CFF;
+    background-color: #1A6387;
 }
 .btn.default:hover {
-    background-color: #63A9FF;
+    filter: saturate(250%);
+}
+
+btn.warn {
+    background-color: #D58120;
+}
+btn.warn:hover {
+    filter: saturate(200%);
 }
 
 .btn.disabled {
@@ -65,14 +110,19 @@ body {
 .label {
     background-color: white;
     border: none;
-    border-radius: 4px;
-    margin-right: 4px;
+    border-radius: 12px;
+    margin-right: 8px;
     cursor: pointer;
+    font-size: 12px;
+    min-width: 30px;
+    padding: 2px 8px;
 }
 
 .label.selected {
-    background-color: #2F8CFF;
+    background-color: #68A2D4;
+    box-shadow: 1px 1px 3px #333 inset;
 }
+
 .label.selected:hover {
     background-color: #63A9FF;
 }
@@ -96,9 +146,10 @@ body {
     right: -10px;
     top: -10px;
     color: white;
-    background-color: red;
-    padding: 3px 5px;
-    border-radius: 5px;
+    background-color: #CD1F33;
+    padding: 2px 6px;
+    border-radius: 20px;
     font-size: 10px;
     text-align: center;
+    min-width: 14px;
 }

@@ -2,12 +2,12 @@
     <div class="top">
         <img class="logo" src="images/logo.png" alt="">
 
-        <button onclick="{onNoKeywordClick}" ref="noKeyword" class="btn default {disabled: noTagCount == 0}"><i class="fa fa-tag"></i> without keyword <label class="badge">{noTagCount}</label></button>
-        <button onclick="{onNoDateClick}" ref="noDate" class="btn default {disabled: noDateCount == 0}"><i class="fa fa-calendar"></i> without date <label class="badge">{noDateCount}</label></button>
-        <button onclick="{onUploadClick}" ref="upload" class="btn success"><i class="fa fa-upload"></i> Upload</button>
-        <button onclick="{onDeleteClick}" ref="delete" class="btn danger"><i class="fa fa-trash-alt"></i> Delete</button>
-        <button onclick="{onBackClick}" ref="back" class="btn default"><i class="fa fa-arrow-left"></i> Back</button>
-        <button onclick="{onLogoutClick}" ref="logout" class="btn danger"><i class="fa fa-sign-out-alt"></i> Logout</button>
+        <button onclick="{onNoKeywordClick}" ref="noKeyword" class="btn default {disabled: noTagCount == 0}"><i class="fa fa-fw fa-tag"></i> <lang-text ref="without_keyword"></lang-text> <label class="badge">{noTagCount}</label></button>
+        <button onclick="{onNoDateClick}" ref="noDate" class="btn default {disabled: noDateCount == 0}"><i class="fa fa-fw fa-calendar"></i> <lang-text ref="without_date"></lang-text> <label class="badge">{noDateCount}</label></button>
+        <button onclick="{onUploadClick}" ref="upload" class="btn success"><i class="fa fa-fw fa-upload"></i> <lang-text ref="Upload"></lang-text></button>
+        <button onclick="{onDeleteClick}" ref="delete" class="btn danger"><i class="fa fa-fw fa-trash-alt"></i> <lang-text ref="Delete"></lang-text></button>
+        <button onclick="{onBackClick}" ref="back" class="btn default"><i class="fa fa-fw fa-arrow-left"></i> <lang-text ref="Back"></lang-text></button>
+        <button onclick="{onLogoutClick}" ref="logout" class="btn danger"><i class="fa fa-fw fa-sign-out-alt"></i> <lang-text ref="Logout"></lang-text></button>
     </div>
     <script>
         const that = this;
@@ -34,21 +34,37 @@
             // HACK: params comes from global scope and will only be filled if edit.html was opened
             var box = window.confirm("You want to delete this document?");
             if (box == true) {
-                $.get("api", {method: "removePDF", fileID: params.fileID})
-                    .done(function (data) {
-                        window.location.href = "index.html";
+
+                let request = {
+                    url: 'api/',
+                    data : {
+                        method: "removePDF",
+                        fileID: params.fileID
+                    }
+                };
+                getData(request).then(function(response) {
+                        if (response.status !== 200) {
+                            console.error('Looks like there was a problem. Status Code: ' + response.status);
+                            return;
+                        }
+                        else {
+                            window.location.href = "index.html";
+                        }
+                    })
+                    .catch(function(err) {
+                        console.error('Fetch Error :-S', err);
                     });
             }
         };
 
         this.onNoDateClick = e => {
 
-        	if( that.noDateCount !== 0 )
+        	if( that.noDateCount != 0 )
             window.location.href = "edit.html?fileID=" + that.noDateDocId;
         };
 
         this.onNoKeywordClick = e => {
-	        if( that.noTagCount !== 0)
+	        if( that.noTagCount != 0)
             window.location.href = "edit.html?fileID=" + that.noTagDocId;
         };
 
@@ -58,20 +74,6 @@
             window.location.href = out;
         };
 
-        function TagStore(){
-            riot.observable(this);
-            this.tags = [];
-            const that = this;
-
-            this.on('loadTags', filter => {
-
-                $.getJSON("api/index.php", {method: "listEmpty"})
-                    .done(function (data) {
-                        that.trigger('tags', data);
-                    }
-                );
-            });
-        }
         // put store global
         tagStore = new TagStore();
 
@@ -94,6 +96,14 @@
                     this.refs[btn].remove();
                 }
             });
+
+            document.addEventListener('keydown', e => {
+                if (e.altKey &&  e.which == '39'){
+                    if( that.noDateCount != 0 )
+                        window.location.href = "edit.html?fileID=" + that.noDateDocId;
+                }
+            });
+
         });
 
     </script>
