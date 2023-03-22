@@ -21,7 +21,7 @@ function DocDetailStore(){
                 }
                 else {
                     response.json().then(data =>{
-                        that.doc = data;
+                        that.doc = data;                    
                         that.trigger('docDetails', data);
                     });
                 }
